@@ -1,0 +1,137 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <sys/wait.h>
+#include <signal.h>
+
+bool checkForInt(char *str2Check);
+void insertChildsToAnArray(int* array, int ppid);
+
+int main(int argc, char* argv[]) {
+	pid_t rootProgPID = getpid();
+	FILE *openedFile;
+	char * pointer;
+	char symbol;
+	//initilize 2 arrays, one for the processID and the second for the suituble STOP counter
+	
+	if (argc != 4) {
+		printf("\n%s\n%s\n","wrong use in function! please insert",
+				"./prog <filePath> <charToLookFor> <terminationBound>");
+		exit(EXIT_FAILURE);
+	}
+	char *currentBuffer = calloc(64, sizeof(char));
+	char *filePath = argv[1];
+	char* charArraySearchQuery = argv[2];
+	int* PIDs = (int*)malloc(strlen(charArraySearchQuery)*sizeof(int));
+	int* stopedCounter = (int*)malloc(strlen(charArraySearchQuery)*sizeof(int));
+	int PIDsPointer = 0;
+	int PIDsSize = 0;
+	int stopedCounterPointer = 0;
+	int stopedCounterSize = 0;
+	int terminationBound = 1000;
+	int pid;
+	int wPIDstatus;
+	int *wstatus = calloc(1,sizeof(int));
+	int PIDsTmpPtr;
+	if (access(filePath,R_OK) != 0) {
+		printf("\n%s\n","File does not exist or you do not have the read permissions");
+		exit(EXIT_FAILURE);
+	} else {
+		openedFile = fopen(filePath, "rb");
+	}
+	if ( checkForInt(argv[3]) != true ) {
+		printf("\n%s\n","invalid terminationBound input - Please give a number for the termination bound");
+		exit(EXIT_FAILURE);
+	} else {
+		terminationBound = atoi(argv[3]);
+//		printf("termination bound is %d\n", terminationBound);
+	}
+	for ( int i = 0; i < strlen(charArraySearchQuery); i++) {
+	        symbol = argv[2][i];
+		char* argvForSymcount[] = {"./sym_count", filePath, &symbol, NULL};
+		if ((pid = fork()) == 0) {
+		      	if (execvp(argvForSymcount[0], argvForSymcount) < 0) {
+				printf("ERROR with executing child process with pid: %d\n", getpid());
+				exit(EXIT_FAILURE);
+			}
+			break;
+		}
+		PIDsSize++;
+	}
+	sleep(1);
+	// executing a shell command to insert all childs to an array:
+	insertChildsToAnArray(PIDs, rootProgPID);
+//	printf("PIDs are %d, %d, %d, %d\n", PIDs[0], PIDs[1],PIDs[2],PIDs[3]);
+	while (PIDsSize > 0) {
+		wPIDstatus = waitpid(PIDs[PIDsPointer], wstatus, WUNTRACED | WCONTINUED);
+			if (wPIDstatus == -1) {
+				printf("ERROR in waitpid()\n");
+				exit(EXIT_FAILURE);
+			}
+      			if (WIFEXITED(*wstatus)) {
+//				printf("process %d finished successfuly with exit code", PIDs[PIDsPointer]);
+				PIDs[PIDsPointer] = PIDs[PIDsSize-1];
+				PIDs[PIDsSize-1] = 0;
+				stopedCounter[PIDsPointer] = stopedCounter[PIDsSize-1];
+				stopedCounter[PIDsSize-1] = 0;
+				PIDsSize--;
+				PIDsPointer = 0;
+			} else if (WIFSTOPPED(*wstatus)) {
+				stopedCounter[PIDsPointer]++;
+//				printf("\n\nstoppedCounter = %d, terminationBound = %d\n\n",stopedCounter[PIDsPointer], terminationBound);
+				if (stopedCounter[PIDsPointer] == terminationBound) {
+					kill(PIDs[PIDsPointer],SIGTERM);
+					kill(PIDs[PIDsPointer],SIGCONT);
+					PIDs[PIDsPointer] = PIDs[PIDsSize-1];
+					stopedCounter[PIDsPointer] = stopedCounter[PIDsSize-1];
+					PIDs[PIDsSize-1] = 0;
+					stopedCounter[PIDsSize-1] = 0;
+					PIDsSize--;
+					PIDsPointer = 0;
+				}
+				else {
+					kill(PIDs[PIDsPointer],SIGCONT);
+					PIDsPointer++;
+					if (PIDsPointer == PIDsSize) {
+						PIDsPointer = 0;
+		      			}
+				}
+			}
+//			printf("PIDsCounters are %d, %d, %d, %d\n", stopedCounter[0], stopedCounter[1],stopedCounter[2],stopedCounter[3]);
+//			printf("PIDs are %d, %d, %d, %d\n", PIDs[0], PIDs[1],PIDs[2],PIDs[3]);
+	}
+	free(currentBuffer);
+	free(PIDs);
+	free(stopedCounter);
+        exit(EXIT_SUCCESS);
+}
+
+bool checkForInt(char *str2Check) {
+	int len = strlen(str2Check);
+	for ( int i=0 ; i<len ; i++) {
+		if (str2Check[i] < 48 || str2Check[i] > 57)
+			return false;
+	}
+	return true;
+}
+void insertChildsToAnArray(int* array, pid_t ppid) {
+	//I got help from stack overflow
+	char *buffer = NULL;
+	char command[50] = {0};
+	int commandSize = 50;
+	FILE *resultCommandFile;
+	int pointer = 0;
+	sprintf(command, "ps -fade | awk '$3==%u {print $2}'", ppid);
+	resultCommandFile = (FILE*)popen(command,"r");
+	while(getline(&buffer,&commandSize,resultCommandFile) >= 0) {
+		array[pointer] = atoi(buffer);
+		pointer++;
+	}
+	free(buffer);
+	fclose(resultCommandFile);
+	return;
+}
