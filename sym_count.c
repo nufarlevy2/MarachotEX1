@@ -26,30 +26,31 @@ int main(int argc, char* argv[]) {
 	sigaction(SIGCONT,&mySig, NULL);
 
 	//DEFINITIONS
-	int rootProgPID = getpid();
 	FILE *openedFile;
 	char *pointer;
 	char *currentBuffer = calloc(64, sizeof(char));
         const char *filePath = argv[1];
         charSearchQuery = argv[2];
-        int pid;
 
 	//Checks on user input
 	if (argc != 3) {
 		printf("\n%s\n%s\n","wrong use in function! please insert",
 				"./a.out <filePath> <charToLookFor>");
-		exit(-1);
+		free(currentBuffer);
+		exit(EXIT_FAILURE);
 	}
 	if (access(filePath,R_OK) != 0) {
 		printf("\n%s\n","File does not exist or you do not have the read permissions");
-		exit(-1);
+		free(currentBuffer);
+		exit(EXIT_FAILURE);
 	}
 	else {
 		openedFile = fopen(filePath, "rb");
 	}
 	if ( strlen(charSearchQuery) != 1) {
 		printf("\n%s\n","invalid char input - the only usage is to search for one character");
-		exit(-1);
+		free(currentBuffer);
+		exit(EXIT_FAILURE);
 	}
 	//Reading the data file and searching for the symbol
 	while ((!feof(openedFile))) {

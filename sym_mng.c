@@ -16,7 +16,6 @@ int main(int argc, char* argv[]) {
 	//DEFINITIONS part 1
 	pid_t rootProgPID = getpid();
 	FILE *openedFile;
-	char * pointer;
 	char symbol;
 	//First checkup
 	if (argc != 4) {
@@ -32,22 +31,27 @@ int main(int argc, char* argv[]) {
 	int* stopedCounter = (int*)malloc(strlen(charArraySearchQuery)*sizeof(int));
 	int PIDsPointer = 0;
 	int PIDsSize = 0;
-	int stopedCounterPointer = 0;
-	int stopedCounterSize = 0;
 	int terminationBound = 1000;
 	int pid;
 	int wPIDstatus;
 	int *wstatus = calloc(1,sizeof(int));
-	int PIDsTmpPtr;
 	//All checks
 	if (access(filePath,R_OK) != 0) {
 		printf("\n%s\n","File does not exist or you do not have the read permissions");
+		free(currentBuffer);
+	        free(PIDs);
+	        free(stopedCounter);
+		free(wstatus);
 		exit(EXIT_FAILURE);
 	} else {
 		openedFile = fopen(filePath, "rb");
 	}
 	if ( checkForInt(argv[3]) != true ) {
 		printf("\n%s\n","invalid terminationBound input - Please give a number for the termination bound");
+		free(currentBuffer);
+	        free(PIDs);
+	        free(stopedCounter);
+		free(wstatus);
 		exit(EXIT_FAILURE);
 	} else {
 		terminationBound = atoi(argv[3]);
@@ -59,6 +63,10 @@ int main(int argc, char* argv[]) {
 		if ((pid = fork()) == 0) {
 		      	if (execvp(argvForSymcount[0], argvForSymcount) < 0) {
 				printf("ERROR with executing child process with pid: %d\n", getpid());
+				free(currentBuffer);
+				free(PIDs);
+			        free(stopedCounter);
+				free(wstatus);
 				exit(EXIT_FAILURE);
 			}
 			break;
@@ -75,6 +83,9 @@ int main(int argc, char* argv[]) {
 		wPIDstatus = waitpid(PIDs[PIDsPointer], wstatus, WUNTRACED | WCONTINUED);
 			if (wPIDstatus == -1) {
 				printf("ERROR in waitpid()\n");
+				free(currentBuffer);
+			        free(PIDs);
+			        free(stopedCounter);
 				exit(EXIT_FAILURE);
 			}
 			//In case the process is finished (exited eith success) getting it out of the list
@@ -113,6 +124,7 @@ int main(int argc, char* argv[]) {
 	free(currentBuffer);
 	free(PIDs);
 	free(stopedCounter);
+	free(wstatus);
         exit(EXIT_SUCCESS);
 }
 //Function that checks if a string is an integer
