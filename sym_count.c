@@ -50,6 +50,7 @@ int main(int argc, char* argv[]) {
 	if ( strlen(charSearchQuery) != 1) {
 		printf("\n%s\n","invalid char input - the only usage is to search for one character");
 		free(currentBuffer);
+		fclose(openedFile);
 		exit(EXIT_FAILURE);
 	}
 	//Reading the data file and searching for the symbol
@@ -66,6 +67,7 @@ int main(int argc, char* argv[]) {
 	}
 	//Free all alocated memory and killing the process
 	free(currentBuffer);
+	fclose(openedFile);
 	kill(getpid(),SIGTERM);	
 }
 
