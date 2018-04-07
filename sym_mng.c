@@ -8,21 +8,23 @@
 #include <sys/wait.h>
 #include <signal.h>
 
+//Decleration for functions
 bool checkForInt(char *str2Check);
 void insertChildsToAnArray(int* array, int ppid);
 
 int main(int argc, char* argv[]) {
+	//DEFINITIONS part 1
 	pid_t rootProgPID = getpid();
 	FILE *openedFile;
 	char * pointer;
 	char symbol;
-	//initilize 2 arrays, one for the processID and the second for the suituble STOP counter
-	
+	//First checkup
 	if (argc != 4) {
 		printf("\n%s\n%s\n","wrong use in function! please insert",
 				"./prog <filePath> <charToLookFor> <terminationBound>");
 		exit(EXIT_FAILURE);
 	}
+	//DEFINITIONS part 2
 	char *currentBuffer = calloc(64, sizeof(char));
 	char *filePath = argv[1];
 	char* charArraySearchQuery = argv[2];
@@ -37,6 +39,7 @@ int main(int argc, char* argv[]) {
 	int wPIDstatus;
 	int *wstatus = calloc(1,sizeof(int));
 	int PIDsTmpPtr;
+	//All checks
 	if (access(filePath,R_OK) != 0) {
 		printf("\n%s\n","File does not exist or you do not have the read permissions");
 		exit(EXIT_FAILURE);
@@ -48,8 +51,8 @@ int main(int argc, char* argv[]) {
 		exit(EXIT_FAILURE);
 	} else {
 		terminationBound = atoi(argv[3]);
-//		printf("termination bound is %d\n", terminationBound);
 	}
+	//Sending childs to their execution prog with each symbol in the pattern
 	for ( int i = 0; i < strlen(charArraySearchQuery); i++) {
 	        symbol = argv[2][i];
 		char* argvForSymcount[] = {"./sym_count", filePath, &symbol, NULL};
@@ -62,27 +65,30 @@ int main(int argc, char* argv[]) {
 		}
 		PIDsSize++;
 	}
+	//sleeping for 1 second
 	sleep(1);
-	// executing a shell command to insert all childs to an array:
+	//Executing a shell command to insert all childs to an array
 	insertChildsToAnArray(PIDs, rootProgPID);
-//	printf("PIDs are %d, %d, %d, %d\n", PIDs[0], PIDs[1],PIDs[2],PIDs[3]);
+	//Going through all the processes in the list
 	while (PIDsSize > 0) {
+		//Getting their status
 		wPIDstatus = waitpid(PIDs[PIDsPointer], wstatus, WUNTRACED | WCONTINUED);
 			if (wPIDstatus == -1) {
 				printf("ERROR in waitpid()\n");
 				exit(EXIT_FAILURE);
 			}
+			//In case the process is finished (exited eith success) getting it out of the list
       			if (WIFEXITED(*wstatus)) {
-//				printf("process %d finished successfuly with exit code", PIDs[PIDsPointer]);
 				PIDs[PIDsPointer] = PIDs[PIDsSize-1];
 				PIDs[PIDsSize-1] = 0;
 				stopedCounter[PIDsPointer] = stopedCounter[PIDsSize-1];
 				stopedCounter[PIDsSize-1] = 0;
 				PIDsSize--;
 				PIDsPointer = 0;
+			//In case the process is stopped, continue it and increasing it's stopped counter
 			} else if (WIFSTOPPED(*wstatus)) {
 				stopedCounter[PIDsPointer]++;
-//				printf("\n\nstoppedCounter = %d, terminationBound = %d\n\n",stopedCounter[PIDsPointer], terminationBound);
+				//If the stopped counter got to the termination bound kill it and get it out of the list
 				if (stopedCounter[PIDsPointer] == terminationBound) {
 					kill(PIDs[PIDsPointer],SIGTERM);
 					kill(PIDs[PIDsPointer],SIGCONT);
@@ -93,6 +99,7 @@ int main(int argc, char* argv[]) {
 					PIDsSize--;
 					PIDsPointer = 0;
 				}
+				//Else: continue the process and move on to the next process in the list
 				else {
 					kill(PIDs[PIDsPointer],SIGCONT);
 					PIDsPointer++;
@@ -101,15 +108,14 @@ int main(int argc, char* argv[]) {
 		      			}
 				}
 			}
-//			printf("PIDsCounters are %d, %d, %d, %d\n", stopedCounter[0], stopedCounter[1],stopedCounter[2],stopedCounter[3]);
-//			printf("PIDs are %d, %d, %d, %d\n", PIDs[0], PIDs[1],PIDs[2],PIDs[3]);
 	}
+	//Free all alocated arguments from memory and exit the program successfuly
 	free(currentBuffer);
 	free(PIDs);
 	free(stopedCounter);
         exit(EXIT_SUCCESS);
 }
-
+//Function that checks if a string is an integer
 bool checkForInt(char *str2Check) {
 	int len = strlen(str2Check);
 	for ( int i=0 ; i<len ; i++) {
@@ -118,6 +124,7 @@ bool checkForInt(char *str2Check) {
 	}
 	return true;
 }
+// Function that execute a shell command to insert all childs to an array
 void insertChildsToAnArray(int* array, pid_t ppid) {
 	//I got help from stack overflow
 	char *buffer = NULL;
