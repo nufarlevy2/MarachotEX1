@@ -12,6 +12,8 @@
 //GLOBAL definitions
 int occurance = 0;
 const char *charSearchQuery;
+char *currentBuffer;
+FILE *openedFile;
 
 //Decleration for Handler
 void handler(int sig);
@@ -26,11 +28,10 @@ int main(int argc, char* argv[]) {
 	sigaction(SIGCONT,&mySig, NULL);
 
 	//DEFINITIONS
-	FILE *openedFile;
 	char *pointer;
-	char *currentBuffer = calloc(64, sizeof(char));
         const char *filePath = argv[1];
         charSearchQuery = argv[2];
+	currentBuffer = calloc(64, sizeof(char));
 
 	//Checks on user input
 	if (argc != 3) {
@@ -75,6 +76,8 @@ int main(int argc, char* argv[]) {
 void handler(int sig){
        if (sig == SIGTERM) {
 	       printf("Process %d finishes. Symbol %c. Instances %d.\n", getpid(), charSearchQuery[0], occurance);
+	       free(currentBuffer);
+               fclose(openedFile);
 	       exit(EXIT_SUCCESS);						            }
        else if (sig == SIGCONT) {
 	       printf("Process %d continues\n",getpid());
