@@ -66,9 +66,7 @@ int main(int argc, char* argv[]) {
 			kill(getpid(),SIGSTOP);
 		}
 	}
-	//Free all alocated memory and killing the process
-	free(currentBuffer);
-	fclose(openedFile);
+	//Sending SIGTERM to the finished process
 	kill(getpid(),SIGTERM);	
 }
 
@@ -80,7 +78,7 @@ void handler(int sig){
                fclose(openedFile);
 	       exit(EXIT_SUCCESS);						            }
        else if (sig == SIGCONT) {
-	       printf("Process %d continues\n",getpid());
+	       printf("Process %d continues",getpid());
        }
 }
 

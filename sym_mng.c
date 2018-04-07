@@ -16,7 +16,8 @@ int main(int argc, char* argv[]) {
 	//DEFINITIONS part 1
 	pid_t rootProgPID = getpid();
 	FILE *openedFile;
-	char symbol;
+	char symbol[2] = {0};
+	int i = 0;
 	//First checkup
 	if (argc != 4) {
 		printf("\n%s\n%s\n","wrong use in function! please insert",
@@ -57,9 +58,10 @@ int main(int argc, char* argv[]) {
 		terminationBound = atoi(argv[3]);
 	}
 	//Sending childs to their execution prog with each symbol in the pattern
-	for ( int i = 0; i < strlen(charArraySearchQuery); i++) {
-	        symbol = argv[2][i];
-		char* argvForSymcount[] = {"./sym_count", filePath, &symbol, NULL};
+	for (i = 0; i < strlen(charArraySearchQuery); i++) {
+	        symbol[0] = argv[2][i];
+		symbol[1] = '\0';
+		char* argvForSymcount[] = {"./sym_count", filePath, symbol, NULL};
 		if ((pid = fork()) == 0) {
 		      	if (execvp(argvForSymcount[0], argvForSymcount) < 0) {
 				printf("ERROR with executing child process with pid: %d\n", getpid());
@@ -130,7 +132,8 @@ int main(int argc, char* argv[]) {
 //Function that checks if a string is an integer
 bool checkForInt(char *str2Check) {
 	int len = strlen(str2Check);
-	for ( int i=0 ; i<len ; i++) {
+	int i = 0;
+	for (i = 0 ; i<len ; i++) {
 		if (str2Check[i] < 48 || str2Check[i] > 57)
 			return false;
 	}
@@ -141,8 +144,8 @@ void insertChildsToAnArray(int* array, pid_t ppid) {
 	//I got help from stack overflow
 	char *buffer = NULL;
 	char command[50] = {0};
-	int commandSize = 50;
 	FILE *resultCommandFile;
+	size_t commandSize = 50;
 	int pointer = 0;
 	sprintf(command, "ps -fade | awk '$3==%u {print $2}'", ppid);
 	resultCommandFile = (FILE*)popen(command,"r");
