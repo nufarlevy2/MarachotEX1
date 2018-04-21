@@ -7,137 +7,104 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 //Decleration for functions
 bool checkForInt(char *str2Check);
 void insertChildsToAnArray(int* array, int ppid);
+void exitWithError(const char *msg, int* PIDs);
 
 int main(int argc, char* argv[]) {
 	//DEFINITIONS part 1
+	system("rm -f /tmp/abcde*");
 	pid_t rootProgPID = getpid();
-	FILE *openedFile;
+	int  openedFile;
 	char symbol[2] = {0};
 	int i = 0;
+	char nameOfFifo[12] = "/tmp/abcdea";
+	char buff[217];
+	int readBytes;
+	int PIDsSize = 0;
+	
 	//First checkup
-	if (argc != 4) {
-		printf("\n%s\n%s\n","wrong use in function! please insert",
-				"./prog <filePath> <charToLookFor> <terminationBound>");
-		exit(EXIT_FAILURE);
+	if (argc != 3) {
+		exitWithError("\nWrong use in function! please insert\n./prog <filePath> <chartersToLookFor>\n", NULL);
 	}
 	//DEFINITIONS part 2
-	char *currentBuffer = calloc(64, sizeof(char));
+	int pointer = 0;
 	char *filePath = argv[1];
 	char* charArraySearchQuery = argv[2];
-	int* PIDs = (int*)malloc(strlen(charArraySearchQuery)*sizeof(int));
-	int* stopedCounter = (int*)malloc(strlen(charArraySearchQuery)*sizeof(int));
-	int PIDsPointer = 0;
-	int PIDsSize = 0;
-	int terminationBound = 1000;
+	size_t patternSize = strlen(argv[2]);
+	int* PIDs = (int*)malloc(patternSize*sizeof(int));
+
+//	int PIDsFile = open("PIDs",O_RDWR | O_CREAT, 0600);
+//	if (PIDsFile < 0) {
+//		exitWithError("Failed to open tmpFileFor PIDs\n");
+//	}
+//	char *PIDs = (int *)mmap(NULL,strlen(charArraySearchQuery)*sizeof(int),PROT_READ | PROT_WRITE, MAP_SHARED, PIDsFile, 0);
+//	if (PIDs < 0) {
+//		exitWithError("Failed to mmap PIDs\n");
+//	}
 	int pid;
-	int wPIDstatus;
-	int *wstatus = calloc(1,sizeof(int));
 	//All checks
 	if (access(filePath,R_OK) != 0) {
-		printf("\n%s\n","File does not exist or you do not have the read permissions");
-		free(currentBuffer);
-	        free(PIDs);
-	        free(stopedCounter);
-		free(wstatus);
-		exit(EXIT_FAILURE);
-	} else {
-		openedFile = fopen(filePath, "rb");
-	}
-	if ( checkForInt(argv[3]) != true ) {
-		printf("\n%s\n","invalid terminationBound input - Please give a number for the termination bound");
-		free(currentBuffer);
-	        free(PIDs);
-	        free(stopedCounter);
-		free(wstatus);
-		exit(EXIT_FAILURE);
-	} else {
-		terminationBound = atoi(argv[3]);
+		exitWithError("\nFile does not exist or you do not have the read permissions\n", PIDs);
 	}
 	//Sending childs to their execution prog with each symbol in the pattern
 	for (i = 0; i < strlen(charArraySearchQuery); i++) {
 	        symbol[0] = argv[2][i];
 		symbol[1] = '\0';
+		nameOfFifo[10] = symbol[0]; 
+		if (mkfifo(nameOfFifo, 0600) == -1) {
+			exitWithError("Failed to mkfifo\n",PIDs);
+		}
 		char* argvForSymcount[] = {"./sym_count", filePath, symbol, NULL};
 		if ((pid = fork()) == 0) {
 		      	if (execvp(argvForSymcount[0], argvForSymcount) < 0) {
-				printf("ERROR with executing child process with pid: %d\n", getpid());
-				free(currentBuffer);
-				free(PIDs);
-			        free(stopedCounter);
-				free(wstatus);
-				exit(EXIT_FAILURE);
+				exitWithError("ERROR with executing child process\n", PIDs);
 			}
 			break;
+		}
+		else if (pid == -1) {
+			exitWithError("Failed to fork\n", PIDs);
 		}
 		PIDsSize++;
 	}
 	//sleeping for 1 second
 	sleep(1);
 	//Executing a shell command to insert all childs to an array
-	insertChildsToAnArray(PIDs, rootProgPID);
+//	insertChildsToAnArray(PIDs, rootProgPID);
 	//Going through all the processes in the list
-	while (PIDsSize > 0) {
-		//Getting their status
-		wPIDstatus = waitpid(PIDs[PIDsPointer], wstatus, WUNTRACED | WCONTINUED);
-			if (wPIDstatus == -1) {
-				printf("ERROR in waitpid()\n");
-				free(currentBuffer);
-			        free(PIDs);
-			        free(stopedCounter);
-				exit(EXIT_FAILURE);
+	while (patternSize > 0) {
+		nameOfFifo[10] = argv[2][pointer];
+		int fd = open(nameOfFifo, O_RDONLY);
+		//In case the process is finished (exited eith success) getting it out of the list
+      		if (readBytes = read(fd, buff, 216) > 0) {
+			if(strstr(buff, "finished") > 0) {
+				close(fd);
+				unlink(nameOfFifo);
+				printf("%s",buff);
+				charArraySearchQuery[pointer] = charArraySearchQuery[patternSize-1];
+				charArraySearchQuery[patternSize-1] = '\0';
+				patternSize--;
+				pointer = 0;
 			}
-			//In case the process is finished (exited eith success) getting it out of the list
-      			if (WIFEXITED(*wstatus)) {
-				PIDs[PIDsPointer] = PIDs[PIDsSize-1];
-				PIDs[PIDsSize-1] = 0;
-				stopedCounter[PIDsPointer] = stopedCounter[PIDsSize-1];
-				stopedCounter[PIDsSize-1] = 0;
-				PIDsSize--;
-				PIDsPointer = 0;
-			//In case the process is stopped, continue it and increasing it's stopped counter
-			} else if (WIFSTOPPED(*wstatus)) {
-				stopedCounter[PIDsPointer]++;
-				//If the stopped counter got to the termination bound kill it and get it out of the list
-				if (stopedCounter[PIDsPointer] == terminationBound) {
-					kill(PIDs[PIDsPointer],SIGTERM);
-					kill(PIDs[PIDsPointer],SIGCONT);
-					PIDs[PIDsPointer] = PIDs[PIDsSize-1];
-					stopedCounter[PIDsPointer] = stopedCounter[PIDsSize-1];
-					PIDs[PIDsSize-1] = 0;
-					stopedCounter[PIDsSize-1] = 0;
-					PIDsSize--;
-					PIDsPointer = 0;
-				}
-				//Else: continue the process and move on to the next process in the list
-				else {
-					kill(PIDs[PIDsPointer],SIGCONT);
-					PIDsPointer++;
-					if (PIDsPointer == PIDsSize) {
-						PIDsPointer = 0;
-		      			}
-				}
+			else {
+				pointer++;
 			}
+		}
+		if (readBytes == -1) {
+			exitWithError("failed to readBytes\n",PIDs);
+		}
+		//In case the process is stopped, continue it and increasing it's stopped counter
+		if (pointer == patternSize) {
+			pointer = 0;
+		}
 	}
 	//Free all alocated arguments from memory and exit the program successfuly
-	free(currentBuffer);
-	free(PIDs);
-	free(stopedCounter);
-	free(wstatus);
-        exit(EXIT_SUCCESS);
-}
-//Function that checks if a string is an integer
-bool checkForInt(char *str2Check) {
-	int len = strlen(str2Check);
-	int i = 0;
-	for (i = 0 ; i<len ; i++) {
-		if (str2Check[i] < 48 || str2Check[i] > 57)
-			return false;
-	}
-	return true;
+	printf("exittttttttttt!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	exit(EXIT_SUCCESS);
 }
 // Function that execute a shell command to insert all childs to an array
 void insertChildsToAnArray(int* array, pid_t ppid) {
@@ -156,4 +123,13 @@ void insertChildsToAnArray(int* array, pid_t ppid) {
 	free(buffer);
 	fclose(resultCommandFile);
 	return;
+}
+
+void exitWithError(const char *msg, int* PIDs) {
+	perror(msg);
+	if (PIDs != NULL) {
+	        free(PIDs);
+	}
+	exit(EXIT_FAILURE);
+
 }
