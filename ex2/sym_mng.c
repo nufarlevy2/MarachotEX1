@@ -85,8 +85,6 @@ int main(int argc, char* argv[]) {
 	}
 	//sleeping for 1 second
 	sleep(1);
-	//Executing a shell command to insert all childs to an array
-//	insertChildsToAnArray(PIDs, rootProgPID);
 	//Going through all the processes in the list
 	while (patternSize > 0) {
 		nameOfFifo[10] = argv[2][pointer];
@@ -99,6 +97,14 @@ int main(int argc, char* argv[]) {
 				printf("%s",buff);
 				charArraySearchQuery[pointer] = charArraySearchQuery[patternSize-1];
 				charArraySearchQuery[patternSize-1] = '\0';
+				patternSize--;
+				pointer = 0;
+			}
+			else if (strstr(buff, "ERROR") > 0) {
+				close(fd);
+				unlink(nameOfFifo);
+				charArraySearchQuery[pointer] = charArraySearchQuery[patternSize-1];
+		  		charArraySearchQuery[patternSize-1] = '\0';
 				patternSize--;
 				pointer = 0;
 			}
@@ -121,24 +127,6 @@ int main(int argc, char* argv[]) {
 	system("rm -f /tmp/abcde*");
 	exit(EXIT_SUCCESS);
 }
-// Function that execute a shell command to insert all childs to an array
-void insertChildsToAnArray(int* array, pid_t ppid) {
-	//I got help from stack overflow
-	char *buffer = NULL;
-	char command[50] = {0};
-	FILE *resultCommandFile;
-	size_t commandSize = 50;
-	int pointer = 0;
-	sprintf(command, "ps -fade | awk '$3==%u {print $2}'", ppid);
-	resultCommandFile = (FILE*)popen(command,"r");
-	while(getline(&buffer,&commandSize,resultCommandFile) >= 0) {
-		array[pointer] = atoi(buffer);
-		pointer++;
-	}
-	free(buffer);
-	fclose(resultCommandFile);
-	return;
-}
 
 void exitWithError(const char *msg, int* PIDs) {
 	perror(msg);
@@ -151,10 +139,13 @@ void exitWithError(const char *msg, int* PIDs) {
 
 void handler(int sig) {
 	if (sig == SIGPIPE) {
-		printf("something");
+		printf("SIGPIPE for Manager process %d. Leaving.",getpid());
 		if (PIDs != NULL) {
 			free(PIDs);
 		}
+		char killAllChildsCommand[100] = {0};
+		snprintf(killAllChildsCommand, sizeof(killAllChildsCommand),"ps -fade | awk '$3==%d {print $2}' | xargs kill -9", getpid());
+		system(killAllChildsCommand);
 		system("rm -f /tmp/abcde*");
 		exit(EXIT_SUCCESS);
 	}

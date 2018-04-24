@@ -92,6 +92,11 @@ int main(int argc, char* argv[]) {
 void handler(int sig){
        if (sig == SIGPIPE) {
 	       printf("SIGPIPE for process %d. Symbol %c. Counter %d. Leaving.", getpid(), charSearchQuery[0], occurance);
+	       char errorString[6] = {0};
+	       snprintf(errorString, sizeof(errorString), "ERROR");
+	       if (write(sharedFile, errorString, sizeof(errorString)) == -1){
+		       printf("Faled to write to fifo inside handler\n");
+	       }
 	       if (openedFile >= 0) {
       		       close(openedFile);
 		       munmap(sharedFileArray, sizeOfFile);
