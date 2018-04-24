@@ -29,8 +29,7 @@ int main(int argc, char* argv[]) {
 	memset(&mySig, 0, sizeof(mySig));
 	mySig.sa_handler = handler;
 	mySig.sa_sigaction;
-	sigaction(SIGTERM,&mySig, NULL);
-	sigaction(SIGCONT,&mySig, NULL);
+	sigaction(SIGPIPE,&mySig, NULL);
 
 	//DEFINITIONS
         const char *filePath = argv[1];

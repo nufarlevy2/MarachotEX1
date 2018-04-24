@@ -10,12 +10,24 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+
+//GLOBAL definitions
+int* PIDs;
+
 //Decleration for functions
 bool checkForInt(char *str2Check);
 void insertChildsToAnArray(int* array, int ppid);
 void exitWithError(const char *msg, int* PIDs);
+void handler(int sig);
 
 int main(int argc, char* argv[]) {
+	//Setting a struct to handle the SIGPIPE signal
+	struct sigaction mySig;
+	memset(&mySig,0,sizeof(mySig));
+	mySig.sa_handler = handler;
+	mySig.sa_sigaction;
+	sigaction(SIGPIPE,&mySig,NULL);
+
 	//DEFINITIONS part 1
 	system("rm -f /tmp/abcde*");
 	pid_t rootProgPID = getpid();
@@ -36,7 +48,7 @@ int main(int argc, char* argv[]) {
 	char *filePath = argv[1];
 	char* charArraySearchQuery = argv[2];
 	size_t patternSize = strlen(argv[2]);
-	int* PIDs = (int*)malloc(patternSize*sizeof(int));
+	PIDs = (int*)malloc(patternSize*sizeof(int));
 
 //	int PIDsFile = open("PIDs",O_RDWR | O_CREAT, 0600);
 //	if (PIDsFile < 0) {
@@ -103,7 +115,10 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	//Free all alocated arguments from memory and exit the program successfuly
-	printf("exittttttttttt!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	if (PIDs != NULL) {
+		free(PIDs);
+	}
+	system("rm -f /tmp/abcde*");
 	exit(EXIT_SUCCESS);
 }
 // Function that execute a shell command to insert all childs to an array
@@ -130,6 +145,20 @@ void exitWithError(const char *msg, int* PIDs) {
 	if (PIDs != NULL) {
 	        free(PIDs);
 	}
+	system("rm -f /tmp/abcde*");
 	exit(EXIT_FAILURE);
-
 }
+
+void handler(int sig) {
+	if (sig == SIGPIPE) {
+		printf("something");
+		if (PIDs != NULL) {
+			free(PIDs);
+		}
+		system("rm -f /tmp/abcde*");
+		exit(EXIT_SUCCESS);
+	}
+}
+
+
+
