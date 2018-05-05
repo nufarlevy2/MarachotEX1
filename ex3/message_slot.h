@@ -16,6 +16,6 @@
 #define BUF_LEN 80
 #define DEVICE_FILE_NAME "simple_char_dev"
 #define SUCCESS 0
-#define ERROR -1
+#define MAX_BUFFER_SIZE 128
 
 #endif
