@@ -50,7 +50,7 @@ static minorNode* getMinorNode(unsigned long minor) {
 			curr = curr -> nextNode;
 		}
 	}
-	printk("minor does not exist\n");
+	printk("123456789minor does not exist\n");
 	return NULL;
 }
 //================== DEVICE FUNCTIONS ===========================
@@ -58,11 +58,11 @@ static int device_open( struct inode* inode,
                         struct file*  file )
 {
   unsigned long minor = (unsigned long)iminor(inode);
-  printk("Invoking device_open(%p)\n", file);
+  printk("123456789Invoking device_open(%p)\n", file);
   if (device_info.size == 0) {
 	  device_info.head = kmalloc(sizeof(minorNode),GFP_KERNEL);
 	  if (device_info.head == NULL) {
-		  printk("Could not kmalloc head\n");
+		  printk("123456789Could not kmalloc head\n");
 		  return -1;
 	  }
 	  device_info.head -> value = minor;
@@ -94,7 +94,7 @@ static int device_release( struct inode* inode,
 {
   minorNode * curr = device_info.head;
   unsigned long minor = iminor(inode);
-  printk("Invoking device_release(%p,%p)\n", inode, file);
+  printk("123456789Invoking device_release(%p,%p)\n", inode, file);
   if (device_info.size > 0) {
 	  while ( curr != NULL) {
 		  if (curr -> value == minor) {
@@ -104,7 +104,7 @@ static int device_release( struct inode* inode,
 		  curr = curr -> nextNode;
 	  }
   }
-  printk("Could not release because the minor does not exist\n");
+  printk("123456789Could not release because the minor does not exist\n");
   return -1;
 }
 
@@ -121,17 +121,17 @@ static ssize_t device_read( struct file* file,
 	 int i;
 	 ssize_t totalWritten;
 	 minorNode * relevantNode;
- 	 printk( "Invocing device_read\n");
+ 	 printk( "123456789Invocing device_read\n");
        	 if (channel == -1 ) {
-       		 printk("Channel is -1\n");
+       		 printk("123456789Channel is -1\n");
        		 return -EINVAL;
        	 }
        	 relevantNode = getMinorNode(minor);
 	 if (relevantNode -> length[channel] < sizeof(buffer) || relevantNode -> length[channel] < length) {
-		 printk("Too small buffer\n");
+		 printk("123456789Too small buffer\n");
 		 return -EINVAL;
 	 }
-       	 printk("Invoking device_write(%p,%d)\n", file, length);
+       	 printk("123456789Invoking device_write(%p,%d)\n", file, length);
        	 for( i = (128*channel); i < length && i < BUF_LEN; ++i ) {
 		 put_user(relevantNode -> channels[i], &buffer[i]);
 		 message[i] += 1;
@@ -154,11 +154,11 @@ static ssize_t device_write( struct file*       file,
 	ssize_t totalWritten;
 	minorNode * relevantNode;
 	if (channel == -1  || sizeof(buffer) > MAX_BUFFER_SIZE || length < sizeof(buffer)) {
-		printk("Channel is -1 OR length of massage is more than 128 bytes\n");
+		printk("123456789Channel is -1 OR length of massage is more than 128 bytes\n");
 		return -EINVAL;
 	}
 	relevantNode = getMinorNode(minor);
-      	printk("Invoking device_write(%p,%d)\n", file, length);
+      	printk("123456789Invoking device_write(%p,%d)\n", file, length);
       	for( i = (128*channel); i < length && i < BUF_LEN; ++i ) {
 		get_user(relevantNode -> channels[i], &buffer[i]);
       		message[i] += 1;
@@ -177,7 +177,7 @@ static long device_ioctl( struct   file* file,
   // Switch according to the ioctl called
   if( IOCTL_SET_ENC == ioctl_command_id && (ioctl_param >=0 && ioctl_param <=3)) {
     // Get the parameter given to ioctl by the process
-    printk( "Invoking ioctl\n");
+    printk( "123456789Invoking ioctl\n");
     file -> private_data = (void*)ioctl_param;
     return SUCCESS;
   }
@@ -217,9 +217,9 @@ static int __init message_slot_init(void)
     return rc;
   }
   
-  printk( "Registeration is successful. ");
-  printk( "If you want to talk to the device driver,\n" );
-  printk( "you have to create a device file:\n" );
+  printk( "123456789Registeration is successful. ");
+  printk( "123456789If you want to talk to the device driver,\n" );
+  printk( "123456789you have to create a device file:\n" );
   printk( "mknod /dev/%s c %d 0\n", DEVICE_FILE_NAME, MAJOR_NUM );
   printk( "You can echo/cat to/from the device file.\n" );
   printk( "Dont forget to rm the device file and "
