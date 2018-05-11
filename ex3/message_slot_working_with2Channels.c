@@ -20,19 +20,19 @@ MODULE_LICENSE("GPL");
 #include "message_slot.h"
 
 //Creating an int linked list for the slot's names
-struct minorNode {
+typedef struct node {
 	unsigned long value;
 	bool open;
 	char channels[512];
 	ssize_t length[4];
-	struct minorNode * nextNode;
-};
+	struct node * nextNode;
+} minorNode;
 
 
 struct message_slot_info
 {
   int size;
-  struct minorNode * head;
+  minorNode * head;
 };
 
 static struct message_slot_info device_info;
@@ -40,11 +40,11 @@ static struct message_slot_info device_info;
 // The message the device will give when asked
 static char message[BUF_LEN] = {0};
 
-static struct minorNode* getMinorNode(unsigned long minor) {
-	struct minorNode * curr = device_info.head;
+static minorNode* getMinorNode(unsigned long minor) {
+	minorNode * curr = device_info.head;
 	if (device_info.size > 0) {
 		while ( curr != NULL) {
-			if (curr -> value == minor && curr -> open) {
+			if (curr -> value == minor && curr -> open == true) {
 				return curr;
 			}
 			curr = curr -> nextNode;
@@ -60,7 +60,7 @@ static int device_open( struct inode* inode,
   unsigned long minor = (unsigned long)iminor(inode);
   printk("123456789Invoking device_open(%p)\n", file);
   if (device_info.size == 0) {
-	  device_info.head = kmalloc(sizeof(struct minorNode),GFP_KERNEL);
+	  device_info.head = kmalloc(sizeof(minorNode),GFP_KERNEL);
 	  if (device_info.head == NULL) {
 		  printk("123456789Could not kmalloc head\n");
 		  return -1;
@@ -71,7 +71,7 @@ static int device_open( struct inode* inode,
 	  device_info.size = 1;
   }
   else {
-	  struct minorNode * curr = device_info.head;
+	  minorNode * curr = device_info.head;
 	  while (curr -> nextNode != NULL) {
 		  if (curr -> value == minor) {
 			  curr -> open = true;
@@ -79,10 +79,10 @@ static int device_open( struct inode* inode,
 		  }
 		  curr = curr -> nextNode;
 	  }
-	  curr = kmalloc(sizeof(struct minorNode),GFP_KERNEL);
-	  curr -> value = minor;
-	  curr -> open = true;
-	  curr -> nextNode = NULL;
+	  curr -> nextNode = kmalloc(sizeof(minorNode),GFP_KERNEL);
+	  curr -> nextNode -> value = minor;
+	  device_info.head -> open = true;
+	  curr -> nextNode -> nextNode = NULL;
 	  device_info.size++;
   }
   return SUCCESS;
@@ -92,14 +92,13 @@ static int device_open( struct inode* inode,
 static int device_release( struct inode* inode,
                            struct file*  file)
 {
-  struct minorNode * curr = device_info.head;
+  minorNode * curr = device_info.head;
   unsigned long minor = iminor(inode);
   printk("123456789Invoking device_release(%p,%p)\n", inode, file);
   if (device_info.size > 0) {
 	  while ( curr != NULL) {
 		  if (curr -> value == minor) {
 			  curr -> open = false;
-			  printk("Releasing successfully one node");
 			  return SUCCESS;
 		  }
 		  curr = curr -> nextNode;
@@ -121,7 +120,7 @@ static ssize_t device_read( struct file* file,
        	 unsigned long minor = iminor(file_inode(file));
 	 int i;
 	 ssize_t totalRead;
-	 struct minorNode * relevantNode;
+	 minorNode * relevantNode;
  	 printk( "123456789Invocing device_read\n");
        	 if (channel == -1 ) {
        		 printk("123456789Channel is -1\n");
@@ -154,7 +153,7 @@ static ssize_t device_write( struct file*       file,
 	unsigned long minor = iminor(file_inode(file));
 	int i;
 	ssize_t totalWritten;
-	struct minorNode * relevantNode;
+	minorNode * relevantNode;
 	if (channel == -1  || sizeof(buffer) > MAX_BUFFER_SIZE || length < sizeof(buffer)) {
 		printk("123456789Channel is -1 OR length of massage is more than 128 bytes\n");
 		return -EINVAL;
@@ -230,8 +229,8 @@ static int __init simple_init(void)
   return 0;
 }
 
-static struct minorNode* freeNode(struct minorNode * currNode) {
-	struct minorNode * tmpNext;
+static minorNode* freeNode(minorNode * currNode) {
+	minorNode * tmpNext;
 	tmpNext = currNode -> nextNode;
 	kfree(currNode);
 	return tmpNext;
@@ -242,7 +241,7 @@ static void __exit simple_cleanup(void)
 {
   // Unregister the device
   // Should always succeed
-  struct minorNode * currNode = device_info.head;
+  minorNode * currNode = device_info.head;
   unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
   if (device_info.size > 0) {
 	  while (currNode != NULL) {
