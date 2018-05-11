@@ -132,7 +132,7 @@ static ssize_t device_read( struct file* file,
 		 return -EINVAL;
 	 }
        	 printk("123456789Invoking device_write(%p,%d)\n", file, length);
-       	 for( i = (128*channel); i < length && i < BUF_LEN; ++i ) {
+       	 for( i = (128*channel); i < relevantNode -> length[channel]; ++i ) {
 		 put_user(relevantNode -> channels[i], &buffer[i]);
 		 message[i] += 1;
 	 }
@@ -199,7 +199,7 @@ struct file_operations Fops =
 
 //---------------------------------------------------------------
 // Initialize the module - Register the character device
-static int __init message_slot_init(void)
+static int __init simple_init(void)
 {
   int rc = -1;
   // init dev struct
@@ -236,7 +236,7 @@ static minorNode* freeNode(minorNode * currNode) {
 }
 
 //---------------------------------------------------------------
-static void __exit message_slot_cleanup(void)
+static void __exit simple_cleanup(void)
 {
   // Unregister the device
   // Should always succeed
@@ -250,7 +250,7 @@ static void __exit message_slot_cleanup(void)
 }
 
 //---------------------------------------------------------------
-module_init(message_slot_init);
-module_exit(message_slot_cleanup);
+module_init(simple_init);
+module_exit(simple_cleanup);
 
 //========================= END OF FILE =========================

@@ -38,7 +38,7 @@ int main( int argc, char* argv[]) {
 	  exit(EXIT_FAILURE);
   }
   // Open slot device
-  fileDescriptor = open(filePath, O_RDWR);
+  fileDescriptor = open(argv[1], O_RDWR);
   if (fileDescriptor < 0) {
 	  printf("\nCannot open file\n");
       	  exit(EXIT_FAILURE);
