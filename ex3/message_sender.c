@@ -43,13 +43,20 @@ int main( int argc, char* argv[]) {
 	  printf("\nCannot open file\n");
       	  exit(EXIT_FAILURE);
   }
-  returnValue = ioctl(fileDescriptor, IOCTL_SET_ENC, 0);
-  printf("\nreturnValue of icotl is: %d\n",returnValue);
+  returnValue = ioctl(fileDescriptor, IOCTL_SET_ENC, channelID);
+  if (returnValue < 0) {
+	  printf("\nreturnValue of icotl is: %d\n",returnValue);
+	  close(fileDescriptor);
+	  exit(EXIT_FAILURE);
+  }
   returnValue = write(fileDescriptor, message, strlen(message));
-  printf("\nreturnValue of write is: %d\n",returnValue);
-//  returnValue = read(fileDescriptor, NULL, 100 );
-  returnValue = close(fileDescriptor);
-  printf("\nreturnValue of release is: %d\n",returnValue);
+  if (returnValue < 0) {                    
+	  printf("\nreturnValue of write is: %d\n",returnValue);
+	  close(fileDescriptor);                           
+	  exit(EXIT_FAILURE);              
+  }
+  close(fileDescriptor);
+  printf("%d bytes written to %s\n",returnValue, filePath);
   exit(EXIT_SUCCESS);
 }
 

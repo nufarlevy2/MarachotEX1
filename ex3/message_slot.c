@@ -119,7 +119,7 @@ static ssize_t device_read( struct file* file,
        	 int channel = (int) file -> private_data;
        	 unsigned long minor = iminor(file_inode(file));
 	 int i;
-	 ssize_t totalWritten;
+	 ssize_t totalRead;
 	 minorNode * relevantNode;
  	 printk( "123456789Invocing device_read\n");
        	 if (channel == -1 ) {
@@ -127,18 +127,19 @@ static ssize_t device_read( struct file* file,
        		 return -EINVAL;
        	 }
        	 relevantNode = getMinorNode(minor);
-	 if (relevantNode -> length[channel] < sizeof(buffer) || relevantNode -> length[channel] < length) {
+	 printk("123456789 length of channel is: %d length of buffer is %d and size of buffer is %d",relevantNode -> length[channel], length, sizeof(buffer));
+	 if (relevantNode -> length[channel] > length) {
 		 printk("123456789Too small buffer\n");
 		 return -EINVAL;
 	 }
-       	 printk("123456789Invoking device_write(%p,%d)\n", file, length);
-       	 for( i = (128*channel); i < relevantNode -> length[channel]; ++i ) {
-		 put_user(relevantNode -> channels[i], &buffer[i]);
+       	 printk("123456789Invoking device_read(%p,%d)\n", file, length);
+       	 for( i = (128*channel); i < relevantNode -> length[channel]+(128*channel); ++i ) {
+		 put_user(relevantNode -> channels[i], &buffer[i-(128*channel)]);
 		 message[i] += 1;
 	 }
        	 //invalid argument error
-	 totalWritten = (ssize_t)(i-(128*channel));
-	 return totalWritten;
+	 totalRead = (ssize_t)(i-(128*channel));
+	 return totalRead;
 }
 
 //---------------------------------------------------------------
@@ -158,9 +159,9 @@ static ssize_t device_write( struct file*       file,
 		return -EINVAL;
 	}
 	relevantNode = getMinorNode(minor);
-      	printk("123456789Invoking device_write(%p,%d)\n", file, length);
-      	for( i = (128*channel); i < length && i < BUF_LEN; ++i ) {
-		get_user(relevantNode -> channels[i], &buffer[i]);
+      	printk("123456789Invoking device_write(%p,%d), channel is %d\n", file, length, channel);
+      	for( i = (128*channel); i < length+(128*channel) && i < BUF_LEN+(128*channel); ++i ) {
+		get_user(relevantNode -> channels[i], &buffer[i-(128*channel)]);
       		message[i] += 1;
       	}
 	// return the number of input characters used
