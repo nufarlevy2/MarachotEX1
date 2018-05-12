@@ -74,7 +74,6 @@ int cleanList(void) {
 	while (device_info.head != NULL) {
 		temp  = device_info.head;
 		device_info.head = temp -> nextNode;
-		printk("Cleaned one node with minor = %lu!", temp -> value);
 		kfree(temp);
 	}
 	return 0;
@@ -85,7 +84,7 @@ static int device_open( struct inode* inode,
 {
   unsigned long minor = (unsigned long)iminor(inode);
   struct minorNode *relevantNode = getMinorNode(minor);
-  printk("123456789Invoking device_open(%p)\n", file);
+  printk("Invoking device_open(%p)\n", file);
   if (relevantNode == NULL) {
 	  insertAtTheBeginingOfTheList(minor);
   } else {
@@ -100,7 +99,7 @@ static int device_release( struct inode* inode,
                            struct file*  file) {
 	unsigned long minor = (unsigned long)iminor(inode);
 	struct minorNode *relevantNode = getMinorNode(minor);
-	printk("123456789Invoking device_release(%p,%p)\n", inode, file);
+	printk("Invoking device_release(%p,%p)\n", inode, file);
 	if (relevantNode != NULL) {
 		relevantNode -> open = false;
 	}
@@ -120,21 +119,20 @@ static ssize_t device_read( struct file* file,
 	 int i;
 	 ssize_t totalRead;
 	 struct minorNode * relevantNode;
- 	 printk( "123456789Invocing device_read\n");
        	 if (channel == -1 ) {
-       		 printk("123456789Channel is -1\n");
+		 printk(KERN_ALERT "Not a valid Channel");
        		 return -EINVAL;
        	 }
        	 relevantNode = getMinorNode(minor);
-	 printk("123456789 length of channel is: %d length of buffer is %d and size of buffer is %d",relevantNode -> length[channel], length, sizeof(buffer));
 	 if (relevantNode -> open != true) {
-		 printk("File is not open");
-	 }
-	 if (relevantNode -> length[channel] > length) {
-		 printk("123456789Too small buffer\n");
+		 printk(KERN_ALERT "The file is not open");
 		 return -EINVAL;
 	 }
-       	 printk("123456789Invoking device_read(%p,%d)\n", file, length);
+	 if (relevantNode -> length[channel] > length) {
+		 printk(KERN_ALERT "Too small buffer\n");
+		 return -EINVAL;
+	 }
+       	 printk("Invoking device_read(%p,%d)\n", file, length);
        	 for( i = (128*channel); i < relevantNode -> length[channel]+(128*channel); ++i ) {
 		 put_user(relevantNode -> channels[i], &buffer[i-(128*channel)]);
 		 message[i] += 1;
@@ -157,13 +155,14 @@ static ssize_t device_write( struct file*       file,
 	ssize_t totalWritten;
 	struct minorNode * relevantNode;
 	if (channel == -1  || sizeof(buffer) > MAX_BUFFER_SIZE || length < sizeof(buffer)) {
-		printk("123456789Channel is -1 OR length of massage is more than 128 bytes\n");
+		printk(KERN_ALERT "Channel is not valid OR length of massage is more than 128 bytes\n");
 		return -EINVAL;
 	}
 	relevantNode = getMinorNode(minor);
-      	printk("123456789Invoking device_write(%p,%d), channel is %d\n", file, length, channel);
+      	printk("Invoking device_write(%p,%d)", file, length);
        	if (relevantNode -> open != true) {
-		printk("File is not open");
+		printk(KERN_ALERT "File is not open");
+		return -EINVAL;
 	}
       	for( i = (128*channel); i < length+(128*channel) && i < BUF_LEN+(128*channel); ++i ) {
 		get_user(relevantNode -> channels[i], &buffer[i-(128*channel)]);
@@ -183,7 +182,7 @@ static long device_ioctl( struct   file* file,
   // Switch according to the ioctl called
   if( IOCTL_SET_ENC == ioctl_command_id && (ioctl_param >=0 && ioctl_param <=3)) {
     // Get the parameter given to ioctl by the process
-    printk( "123456789Invoking ioctl\n");
+    printk( "Invoking ioctl\n");
     file -> private_data = (void*)ioctl_param;
     return SUCCESS;
   }
@@ -223,9 +222,9 @@ static int __init simple_init(void)
     return rc;
   }
   
-  printk( "123456789Registeration is successful. ");
-  printk( "123456789If you want to talk to the device driver,\n" );
-  printk( "123456789you have to create a device file:\n" );
+  printk( "Registeration is successful. ");
+  printk( "If you want to talk to the device driver,\n" );
+  printk( "you have to create a device file:\n" );
   printk( "mknod /dev/%s c %d 0\n", DEVICE_FILE_NAME, MAJOR_NUM );
   printk( "You can echo/cat to/from the device file.\n" );
   printk( "Dont forget to rm the device file and "

@@ -19,7 +19,7 @@ int main( int argc, char* argv[]) {
 
   // check num of arguments
   if (argc != 3) {
-	  printf("\nWrong use in function! please insert\n./message_sender <filePath> <channelID> <message>\n");
+	  printf("ERROR - Wrong use in function! please insert\n./message_sender <filePath> <channelID> <message>\n");
 	  exit(EXIT_FAILURE);
   }
   filePath = argv[1];
@@ -27,24 +27,24 @@ int main( int argc, char* argv[]) {
   if (checkForInt(argv[2])) {
 	  channelID = atoi(argv[2]);
   } else {
-	  printf("\nNot a valid channel ID must be an integer\n");
+	  printf("ERROR - Not a valid channel ID must be an integer\n");
 	  exit(EXIT_FAILURE);
   }
   // Open slot device
   fileDescriptor = open(argv[1], O_RDWR);
   if (fileDescriptor < 0) {
-	  printf("\nCannot open file\n");
+	  printf("ERROR - Cannot open file\n");
       	  exit(EXIT_FAILURE);
   }
   returnValue = ioctl(fileDescriptor, IOCTL_SET_ENC, channelID);
   if (returnValue < 0) {
-	  printf("\nreturnValue of icotl is: %d\n",returnValue);
+	  printf("ERROR in IOCTL\n");
 	  close(fileDescriptor);
 	  exit(EXIT_FAILURE);
   }
   returnValue = read(fileDescriptor, buffer, sizeof(buffer));
    if (returnValue < 0) {
-	   printf("\nreturnValue of read is: %d\n",returnValue);
+	   printf("ERROR in READ\n");
 	   close(fileDescriptor);
 	   exit(EXIT_FAILURE);
    }
