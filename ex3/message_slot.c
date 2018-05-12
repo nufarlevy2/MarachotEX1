@@ -40,73 +40,71 @@ static struct message_slot_info device_info;
 // The message the device will give when asked
 static char message[BUF_LEN] = {0};
 
-static struct minorNode* getMinorNode(unsigned long minor) {
-	struct minorNode * curr = device_info.head;
-	if (device_info.size > 0) {
-		while ( curr != NULL) {
-			if (curr -> value == minor && curr -> open) {
-				return curr;
-			}
-			curr = curr -> nextNode;
-		}
+// Functions of the lisnked list
+void insertAtTheBeginingOfTheList(unsigned long value) {
+	int i;
+	struct minorNode * first = (struct minorNode *)kmalloc(sizeof(struct minorNode), GFP_KERNEL);
+	first -> value = value;
+	first -> open = true;
+	for (i = 0; i <= 3; i++) {
+		first -> length[i] = 0;
 	}
-	printk("123456789minor does not exist\n");
-	return NULL;
+	first -> nextNode = device_info.head;
+	device_info.head = first;
+	device_info.size++;
+}
+
+struct minorNode* getMinorNode(unsigned long minor) {
+	struct minorNode * curr;
+	if (device_info.head == NULL) {
+		return NULL;
+	}
+	curr = device_info.head;
+	while ( curr -> value != minor) {
+		if (curr -> nextNode == NULL) {
+			return NULL;
+		}
+		curr = curr -> nextNode;
+	}
+	return curr;
+}
+
+int cleanList(void) {
+	struct minorNode * temp = NULL;
+	while (device_info.head != NULL) {
+		temp  = device_info.head;
+		device_info.head = temp -> nextNode;
+		printk("Cleaned one node with minor = %lu!", temp -> value);
+		kfree(temp);
+	}
+	return 0;
 }
 //================== DEVICE FUNCTIONS ===========================
 static int device_open( struct inode* inode,
                         struct file*  file )
 {
   unsigned long minor = (unsigned long)iminor(inode);
+  struct minorNode *relevantNode = getMinorNode(minor);
   printk("123456789Invoking device_open(%p)\n", file);
-  if (device_info.size == 0) {
-	  device_info.head = kmalloc(sizeof(struct minorNode),GFP_KERNEL);
-	  if (device_info.head == NULL) {
-		  printk("123456789Could not kmalloc head\n");
-		  return -1;
-	  }
-	  device_info.head -> value = minor;
-	  device_info.head -> open = true;
-	  device_info.head -> nextNode = NULL;
-	  device_info.size = 1;
+  if (relevantNode == NULL) {
+	  insertAtTheBeginingOfTheList(minor);
+  } else {
+	  relevantNode -> open = true;
   }
-  else {
-	  struct minorNode * curr = device_info.head;
-	  while (curr -> nextNode != NULL) {
-		  if (curr -> value == minor) {
-			  curr -> open = true;
-			  return SUCCESS;
-		  }
-		  curr = curr -> nextNode;
-	  }
-	  curr = kmalloc(sizeof(struct minorNode),GFP_KERNEL);
-	  curr -> value = minor;
-	  curr -> open = true;
-	  curr -> nextNode = NULL;
-	  device_info.size++;
-  }
+  file -> private_data = (void*)-1;
   return SUCCESS;
 }
 
 //---------------------------------------------------------------
 static int device_release( struct inode* inode,
-                           struct file*  file)
-{
-  struct minorNode * curr = device_info.head;
-  unsigned long minor = iminor(inode);
-  printk("123456789Invoking device_release(%p,%p)\n", inode, file);
-  if (device_info.size > 0) {
-	  while ( curr != NULL) {
-		  if (curr -> value == minor) {
-			  curr -> open = false;
-			  printk("Releasing successfully one node");
-			  return SUCCESS;
-		  }
-		  curr = curr -> nextNode;
-	  }
-  }
-  printk("123456789Could not release because the minor does not exist\n");
-  return -1;
+                           struct file*  file) {
+	unsigned long minor = (unsigned long)iminor(inode);
+	struct minorNode *relevantNode = getMinorNode(minor);
+	printk("123456789Invoking device_release(%p,%p)\n", inode, file);
+	if (relevantNode != NULL) {
+		relevantNode -> open = false;
+	}
+      	return SUCCESS;
 }
 
 //---------------------------------------------------------------
@@ -129,6 +127,9 @@ static ssize_t device_read( struct file* file,
        	 }
        	 relevantNode = getMinorNode(minor);
 	 printk("123456789 length of channel is: %d length of buffer is %d and size of buffer is %d",relevantNode -> length[channel], length, sizeof(buffer));
+	 if (relevantNode -> open != true) {
+		 printk("File is not open");
+	 }
 	 if (relevantNode -> length[channel] > length) {
 		 printk("123456789Too small buffer\n");
 		 return -EINVAL;
@@ -161,6 +162,9 @@ static ssize_t device_write( struct file*       file,
 	}
 	relevantNode = getMinorNode(minor);
       	printk("123456789Invoking device_write(%p,%d), channel is %d\n", file, length, channel);
+       	if (relevantNode -> open != true) {
+		printk("File is not open");
+	}
       	for( i = (128*channel); i < length+(128*channel) && i < BUF_LEN+(128*channel); ++i ) {
 		get_user(relevantNode -> channels[i], &buffer[i-(128*channel)]);
       		message[i] += 1;
@@ -183,7 +187,7 @@ static long device_ioctl( struct   file* file,
     file -> private_data = (void*)ioctl_param;
     return SUCCESS;
   }
-  return -1;
+  return -EINVAL;
 }
 
 //==================== DEVICE SETUP =============================
@@ -230,25 +234,13 @@ static int __init simple_init(void)
   return 0;
 }
 
-static struct minorNode* freeNode(struct minorNode * currNode) {
-	struct minorNode * tmpNext;
-	tmpNext = currNode -> nextNode;
-	kfree(currNode);
-	return tmpNext;
-}
-
 //---------------------------------------------------------------
 static void __exit simple_cleanup(void)
 {
   // Unregister the device
   // Should always succeed
-  struct minorNode * currNode = device_info.head;
+  cleanList();
   unregister_chrdev(MAJOR_NUM, DEVICE_RANGE_NAME);
-  if (device_info.size > 0) {
-	  while (currNode != NULL) {
-		  currNode = freeNode(currNode);
-	  }
-  }
 }
 
 //---------------------------------------------------------------
