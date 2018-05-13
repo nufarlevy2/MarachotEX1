@@ -40,19 +40,16 @@ int main( int argc, char* argv[]) {
   // Open slot device
   fileDescriptor = open(argv[1], O_RDWR);
   if (fileDescriptor < 0) {
-	  printf("ERROR - Cannot open file\n");
       	  exit(EXIT_FAILURE);
   }
   //Perfoeming IOCTL
   returnValue = ioctl(fileDescriptor, IOCTL_SET_ENC, channelID);
   if (returnValue < 0) {
-	  printf("ERROR in IOCTL\n");
 	  close(fileDescriptor);
 	  exit(EXIT_FAILURE);
   }
   returnValue = write(fileDescriptor, message, strlen(message));
   if (returnValue < 0) {                    
-	  printf("ERROR in WRITE\n");
 	  close(fileDescriptor);                           
 	  exit(EXIT_FAILURE);              
   }
