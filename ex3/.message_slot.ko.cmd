@@ -1,0 +1,1 @@
+cmd_/home/nufar/exresices/exerecisesGit/ex3/message_slot.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o /home/nufar/exresices/exerecisesGit/ex3/message_slot.ko /home/nufar/exresices/exerecisesGit/ex3/message_slot.o /home/nufar/exresices/exerecisesGit/ex3/message_slot.mod.o ;  true
