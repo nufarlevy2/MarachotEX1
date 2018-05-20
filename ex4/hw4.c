@@ -7,36 +7,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
 
-#define NUM_THREADS  3
-#define TCOUNT      10
-#define COUNT_LIMIT 12
-
-int             count         = 0;
-int             thread_ids[3] = {0,1,2};
-
-pthread_mutex_t count_mutex;
-pthread_cond_t  count_threshold_cv;
+//global variables
+char chunk[1024] = {0};
+//pid_t *thread_ids;
+int numOfThreads;
+pthread_mutex_t writeToBuffer;
+pthread_cond_t *conds;
+//pthread_t *threads;
 
 //----------------------------------------------------------------------------
-void *inc_count(void *t)
+void *xor(void *t)
 {
   int i;
-  long my_id = (long)t;
+  char *file = (char*)t;
+  int fd;
+  char buffer[1024] = {0};
+  bool fileEnded = false;
+  int numOfBytesRead;
+//  int indexOfThread;
+//  pid_t myTID = gettid();
 
-  for (i=0; i<TCOUNT; i++)
-  {
-    pthread_mutex_lock(&count_mutex);
-    count++;
+  //getting the thread index
+//  for (i = 0; i < numOfThreads || thread_ids[i] != '\0' ; i++) {
+//	  if (thread_ids[i] == myTID) {
+//		  indexOfThread = i;
+//	  }
+//  }
+//  if (indexOfThread == 0) {
+//	  thread_ids[i] = myTID;
+//  }
 
+  //open the relevant file
+  fd = open(file,O_TRUNC);
+  if (fd < 0) {
+	  printf("one of the threads could not open file %s\n",file);
+	  pthread_exit(NULL);
+  }
 
-    // Check the value of count and signal waiting thread when condition is
-    // reached.  Note that this occurs while mutex is locked.
-    if (count == COUNT_LIMIT)
-    {
-       pthread_cond_signal(&count_threshold_cv);
-       printf("inc_count(): thread %ld, count = %d  Threshold reached.\n",
-              my_id, count);
+  while (!fileEnded) {
+	  numOfBytesRead = read(fd, &buffer, 1024);
+	  if (numOfBytesRead < 1024) {
+		  fileEnded = true;
+	  }
+      	  pthread_mutex_lock(&writeToBuffer);
+	  pthread_cond_wait(&conds[indexOfThread], &writeToBuffer);
+	  for (i = 0; i<1024; i++) {
+		  chunk[i] = chunk[i]^buffer[i];
+	  }
+   	  pthread_cond_signal(&conds[indexOfThread], &writeToBuffer);
     }
 
     printf("inc_count(): thread %ld, count = %d, unlocking mutex\n",
@@ -45,62 +65,50 @@ void *inc_count(void *t)
 
     //Do some "work" so threads can alternate on mutex lock
     sleep(1);
+    if (pthread_cond_wait(&count_threshold_cv, &count_mutex) == 0 && pthread_cond_wait(&count_threshold_cv, &count_mutex)  == 0) {
+		    printf("all condition are finished\n");
   }
-  pthread_exit(NULL);
-}
-
-//----------------------------------------------------------------------------
-void *watch_count(void *t)
-{
-  long my_id = (long)t;
-
-  printf("Starting watch_count(): thread %ld\n", my_id);
-
-  /*
-   Lock mutex and wait for signal.  Note that the pthread_cond_wait
-   routine will automatically and atomically unlock mutex while it waits.
-   Also, note that if COUNT_LIMIT is reached before this routine is run by
-   the waiting thread, the loop will be skipped to prevent pthread_cond_wait
-   from never returning.
-  */
-  pthread_mutex_lock(&count_mutex);
-  while (count<COUNT_LIMIT)
-  {
-    printf("watch_count(): thread %ld Meditating on condition variable.\n",
-           my_id);
-    pthread_cond_wait(&count_threshold_cv, &count_mutex);
-    printf("watch_count(): thread %ld Condition signal received.\n", my_id);
-
-    count += 125;
-
-    printf("watch_count(): thread %ld count now = %d.\n", my_id, count);
-  }
-  pthread_mutex_unlock(&count_mutex);
   pthread_exit(NULL);
 }
 
 //----------------------------------------------------------------------------
 int main (int argc, char *argv[])
 {
-  int i, rc;
-  long t1=1, t2=2, t3=3;
-  pthread_t threads[3];
+  int i;
   pthread_attr_t attr;
 
+
+  //cheking the input of the user
+  if (argc < 3) {
+	  printf("\nWrong use in this function! please insert\n./hw4.c <outputFilePath> <inputFilesPath...>\n");
+	  exit(EXIT_FAILURE);
+  }
+  for (i = 2; i<argc; i++) {
+	  if (access(argv[i],R_OK) != 0) {
+		  printf("\nFile \"%s\" does not exist or you do not have the read permissions\n", argv[i]);
+		  exit(EXIT_FAILURE);
+	  }
+  }
+  numOfThreads = argc-2;
+//  thread_ids = (pid_t*)calloc(numOfThreads+1, sizeof(pid_t));
+//  threads = (pthread_t*)calloc(numOfThreads+1, sizeof(pthread_t));
+  conds = (pthread_cond_t*)calloc(numOfThreads+1, sizeof(pthread_cond_t));
+
   //Initialize mutex and condition variable objects
-  pthread_mutex_init(&count_mutex, NULL);
-  pthread_cond_init (&count_threshold_cv, NULL);
+  pthread_mutex_init(&writeToBuffer, NULL);
+  for (i = 0; i<numOfThreads; i++) {
+	  pthread_cond_init(&cond[i], NULL);
+  }
 
   //For portability, explicitly create threads in a joinable state
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-  pthread_create(&threads[0], &attr, watch_count, (void *)t1);
-  pthread_create(&threads[1], &attr, inc_count, (void *)t2);
-  pthread_create(&threads[2], &attr, inc_count, (void *)t3);
-
+  for (i = 0; i<numOfThreads; i++) {
+	  pthread_create(threads[i], &attr, xor, (void *)argv[i+2]);
+  }
+  
   //Wait for all threads to complete
-  for (i=0; i<NUM_THREADS; i++)
-  {
+  for (i=0; i<NUM_THREADS; i++) {
     pthread_join(threads[i], NULL);
   }
 
@@ -108,8 +116,11 @@ int main (int argc, char *argv[])
 
   //Clean up and exit
   pthread_attr_destroy(&attr);
-  pthread_mutex_destroy(&count_mutex);
-  pthread_cond_destroy(&count_threshold_cv);
+  pthread_mutex_destroy(&writeToBuffer);
+  pthread_cond_destroy(&awake);
+  pthread_cond_destroy(&eof);
+  free(thread_ids);
+  free(threads);
   pthread_exit(NULL);
 }
 //============================== END OF FILE =================================
