@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 
 //global variables
-char chunk[1024];
+char chunk[1024*1024];
 pthread_t *thread_ids;
 bool *stillRunning;
 bool *finishedXoring;
@@ -154,6 +154,7 @@ void *xor(void *t) {
 	  printf("Before xoring to buffer\n");
 	  for (i = 0; i<1024; i++) {
 		  chunk[i] = chunk[i]^buffer[i];
+		  buffer[i] = '\0';
 	  }
 	  printf("Finished Xoring thread in index %d\n",indexOfThread);
 	  stillRunning[indexOfThread] = !fileEnded;
@@ -173,6 +174,13 @@ void *xor(void *t) {
 		nextThreadIndex = findNextStep();
 		printf("After next thread finding\n");
 	  } else if (nextThreadIndex == -2) {
+		  printf("Before writing to file\n");
+		  rv = writeToOutputFile();
+		  printf("After writing to file\n");
+		  if (rv != 0) {
+			  printf("Written failed\n");
+			  pthread_exit(NULL);
+		  }
 		  printf("Got -2 in findNextStep function\n");
 		  pthread_exit(NULL);
 	  }
@@ -189,9 +197,6 @@ void *xor(void *t) {
 	  if (rv != 0) {
 		  printf("ERROR in Unlock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
-	  }
-	  for (i = 0; i<1024; i++) {
-		  chunk[i] = '\0';
 	  }
 	  sleep(0.1);
   }
