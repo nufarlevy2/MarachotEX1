@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 
 //global variables
-char chunk[1024] = {0};
+char chunk[1024];
 pthread_t *thread_ids;
 bool *stillRunning;
 bool *finishedXoring;
@@ -67,6 +67,9 @@ int writeToOutputFile() {
 		finishedXoring[i] = false;
   		printf("After writen to file thread in place %d has putten false in finished xoring\n",i);
 	}
+	for (i = 0; i<1024; i++) {
+		chunk[i] = '\0';
+	}
 	return 0;
 }
 
@@ -103,7 +106,7 @@ void *xor(void *t) {
   int i;
   char *file = (char*)t;
   int fd;
-  char buffer[1024] = {0};
+  char buffer[1024] = {'\0'};
   bool fileEnded = false;
   int numOfBytesRead;
   int nextThreadIndex;
@@ -187,6 +190,9 @@ void *xor(void *t) {
 		  printf("ERROR in Unlock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
+	  for (i = 0; i<1024; i++) {
+		  chunk[i] = '\0';
+	  }
 	  sleep(0.1);
   }
   printf("Finished with file - %s\n",file);
@@ -201,6 +207,9 @@ int main (int argc, char *argv[]) {
   pthread_attr_t attr;
 
   //cheking the input of the user
+  for (i = 0; i<1024; i++) {
+ 	  chunk[i] = '\0';
+  }
   if (argc < 3) {
 	  printf("\nWrong use in this function! please insert\n./hw4.c <outputFilePath> <inputFilesPath...>\n");
 	  exit(EXIT_FAILURE);
