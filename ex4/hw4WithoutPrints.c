@@ -25,6 +25,8 @@ pthread_cond_t wakeUp;
 pthread_t *threads;
 char** inputFilesPointer;
 bool needToDoCondWait = 0;
+int sizeOfFile = 0;
+int sizeOfChunk = 0;
 
 //decleration of help functions
 int findMyIndex(char *file);
@@ -48,10 +50,13 @@ int findMyIndex(char *file) {
 int writeToOutputFile() {
 	int rv;
 	int i;
-	rv = write(fdOutputFile, chunk, 1024);
+	rv = write(fdOutputFile, chunk, sizeOfChunk);
 	if (rv < 0) {
+		printf("Could not write chunk to data file\n");
 		return -1;
 	}
+	sizeOfFile += sizeOfChunk;
+	sizeOfChunk = 0;
 	for (i = 0; i < numOfThreads; i++) {
 		if (stillRunning[i] == true) {
 			finishedXoring[i] = false;
@@ -60,7 +65,7 @@ int writeToOutputFile() {
 	for (i = 0; i < numOfThreads; i++) {
 		finishedXoring[i] = false;
 	}
-	for (i = 0; i<1024; i++) {
+	for (i = 0; i<(1024*1024); i++) {
 		chunk[i] = '\0';
 	}
 	return 0;
@@ -93,7 +98,7 @@ void *xor(void *t) {
   int i;
   char *file = (char*)t;
   int fd;
-  char buffer[1024] = {'\0'};
+  char buffer[1024*1024] = {'\0'};
   bool fileEnded = false;
   int numOfBytesRead;
   int nextThreadIndex;
@@ -104,14 +109,15 @@ void *xor(void *t) {
   //open the relevant file
   fd = open(file,O_RDONLY);
   if (fd < 0) {
+	  printf("one of the threads could not open file %s\n",file);
 	  pthread_exit(NULL);
   }
   while (!fileEnded) {
-	  numOfBytesRead = read(fd, &buffer, 1024);
+	  numOfBytesRead = read(fd, &buffer, (1024*1024));
 	  if (numOfBytesRead < 0) {
 		  printf("Could not read from file - %s\n", file);
 		  pthread_exit(NULL);
-	  } if (numOfBytesRead < 1024) {
+	  } if (numOfBytesRead < (1024*1024)) {
 		  fileEnded = true;
 	  }
 	  indexOfThread = findMyIndex(file);
@@ -127,9 +133,12 @@ void *xor(void *t) {
 		  printf("ERROR in cond_wait()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
-	  for (i = 0; i<1024; i++) {
+	  for (i = 0; i<numOfBytesRead; i++) {
 		  chunk[i] = chunk[i]^buffer[i];
 		  buffer[i] = '\0';
+	  }
+	  if (sizeOfChunk < numOfBytesRead) {
+		  sizeOfChunk = numOfBytesRead;
 	  }
 	  stillRunning[indexOfThread] = !fileEnded;
 	  finishedXoring[indexOfThread] = true;
@@ -137,14 +146,12 @@ void *xor(void *t) {
 	  if (nextThreadIndex == -1) {
 		rv = writeToOutputFile();
 		if (rv != 0) {
-			printf("Written failed\n");
 			pthread_exit(NULL);
 		}
 		nextThreadIndex = findNextStep();
 	  } else if (nextThreadIndex == -2) {
 		  rv = writeToOutputFile();
 		  if (rv != 0) {
-			  printf("Written failed\n");
 			  pthread_exit(NULL);
 		  }
 		  pthread_exit(NULL);
@@ -172,7 +179,7 @@ int main (int argc, char *argv[]) {
   pthread_attr_t attr;
 
   //cheking the input of the user
-  for (i = 0; i<1024; i++) {
+  for (i = 0; i<(1024*1024); i++) {
  	  chunk[i] = '\0';
   }
   if (argc < 3) {
@@ -191,9 +198,9 @@ int main (int argc, char *argv[]) {
 	  exit(EXIT_FAILURE);
   }
   numOfThreads = argc-2;
+  printf("Hello, creating %s from %d input files\n",argv[1],numOfThreads);
   inputFilesPointer = malloc((argc-2)*sizeof(*inputFilesPointer));
   if (inputFilesPointer == NULL) {
-       	  printf("Malloc not succedded for inputFilesPointer\n");
   }
   for (i = 0; i<argc-2; i++) {
 	  inputFilesPointer[i] = argv[i+2];
@@ -203,7 +210,6 @@ int main (int argc, char *argv[]) {
   stillRunning = (bool*)calloc(numOfThreads+1, sizeof(bool));
   finishedXoring = (bool*)calloc(numOfThreads+1, sizeof(bool));
   if (thread_ids == NULL || threads == NULL || stillRunning == NULL || finishedXoring == NULL) {
-	  printf("cannot calloc one of the internal lists of the prog\n");
   }
 
   //Initialize mutex and condition variable objects
@@ -235,7 +241,6 @@ int main (int argc, char *argv[]) {
 	  }
   }
   sleep(1);
-  //Wait for all threads to complete
   for (i=0; i<numOfThreads; i++) {
 	  rv = pthread_join(threads[i], NULL);
 	  if (rv != 0) {                            
@@ -244,7 +249,7 @@ int main (int argc, char *argv[]) {
 	  }
   }
 
-  printf ("Main(): Waited on %d  threads. Done.\n", numOfThreads);
+  printf("Created %s with size %d bytes\n", argv[1], sizeOfFile);
 
   //Clean up and exit
   close(fdOutputFile);

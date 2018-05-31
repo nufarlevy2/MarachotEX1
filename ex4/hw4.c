@@ -25,6 +25,8 @@ pthread_cond_t wakeUp;
 pthread_t *threads;
 char** inputFilesPointer;
 bool needToDoCondWait = 0;
+int sizeOfFile = 0;
+int sizeOfChunk = 0;
 
 //decleration of help functions
 int findMyIndex(char *file);
@@ -52,7 +54,7 @@ int writeToOutputFile() {
 	int rv;
 	int i;
 	printf("In writeToOutputFile()\n");
-	rv = write(fdOutputFile, chunk, 1024);
+	rv = write(fdOutputFile, chunk, sizeOfChunk);
 	if (rv < 0) {
 		printf("Could not write chunk to data file\n");
 		return -1;
@@ -62,12 +64,14 @@ int writeToOutputFile() {
 			finishedXoring[i] = false;
 		}
 	}
+	sizeOfFile += sizeOfChunk;
+	sizeOfChunk = 0;
 	printf("Written all chunk to output file\n");
 	for (i = 0; i < numOfThreads; i++) {
 		finishedXoring[i] = false;
   		printf("After writen to file thread in place %d has putten false in finished xoring\n",i);
 	}
-	for (i = 0; i<1024; i++) {
+	for (i = 0; i<(1024*1024); i++) {
 		chunk[i] = '\0';
 	}
 	return 0;
@@ -106,7 +110,7 @@ void *xor(void *t) {
   int i;
   char *file = (char*)t;
   int fd;
-  char buffer[1024] = {'\0'};
+  char buffer[1024*1024] = {'\0'};
   bool fileEnded = false;
   int numOfBytesRead;
   int nextThreadIndex;
@@ -124,12 +128,12 @@ void *xor(void *t) {
   printf("After open of input file\n");
   while (!fileEnded) {
 	  printf("In while - file not ended\n");
-	  numOfBytesRead = read(fd, &buffer, 1024);
+	  numOfBytesRead = read(fd, &buffer, (1024*1024));
 	  printf("Num of bytes = %d\n",numOfBytesRead);
 	  if (numOfBytesRead < 0) {
 		  printf("Could not read from file - %s\n", file);
 		  pthread_exit(NULL);
-	  } if (numOfBytesRead < 1024) {
+	  } if (numOfBytesRead < (1024*1024)) {
 		  printf("Reached the end of the file - %s\n", file);
 		  fileEnded = true;
 	  }
@@ -152,9 +156,12 @@ void *xor(void *t) {
 		  pthread_exit(NULL);
 	  }
 	  printf("Before xoring to buffer\n");
-	  for (i = 0; i<1024; i++) {
+	  for (i = 0; i<numOfBytesRead; i++) {
 		  chunk[i] = chunk[i]^buffer[i];
 		  buffer[i] = '\0';
+	  }
+	  if (sizeOfChunk < numOfBytesRead) {
+		  sizeOfChunk = numOfBytesRead;
 	  }
 	  printf("Finished Xoring thread in index %d\n",indexOfThread);
 	  stillRunning[indexOfThread] = !fileEnded;
@@ -212,7 +219,7 @@ int main (int argc, char *argv[]) {
   pthread_attr_t attr;
 
   //cheking the input of the user
-  for (i = 0; i<1024; i++) {
+  for (i = 0; i<(1024*1024); i++) {
  	  chunk[i] = '\0';
   }
   if (argc < 3) {
@@ -298,7 +305,7 @@ int main (int argc, char *argv[]) {
 	  }
   }
 
-  printf ("Main(): Waited on %d  threads. Done.\n", numOfThreads);
+  printf ("Created %s with size %d bytes.\n", argv[1], sizeOfFile);
 
   //Clean up and exit
   close(fdOutputFile);
