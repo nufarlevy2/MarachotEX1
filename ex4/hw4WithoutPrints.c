@@ -55,13 +55,13 @@ int writeToOutputFile() {
 		printf("Could not write chunk to data file\n");
 		return -1;
 	}
-	sizeOfFile += sizeOfChunk;
-	sizeOfChunk = 0;
 	for (i = 0; i < numOfThreads; i++) {
 		if (stillRunning[i] == true) {
 			finishedXoring[i] = false;
 		}
 	}
+	sizeOfFile += sizeOfChunk;
+	sizeOfChunk = 0;
 	for (i = 0; i < numOfThreads; i++) {
 		finishedXoring[i] = false;
 	}
@@ -79,7 +79,7 @@ int findNextStep() {
 	int i;
 	bool notFinished = false;
 	for (i = 0; i < numOfThreads; i++) {
-		if (finishedXoring[i] == '\0' || (stillRunning[i] == true && finishedXoring[i] == false)) {
+		if ((stillRunning[i] == true && finishedXoring[i] == false)) {
 			notFinished = true;
 			return i;
 		}
@@ -146,12 +146,13 @@ void *xor(void *t) {
 	  if (nextThreadIndex == -1) {
 		rv = writeToOutputFile();
 		if (rv != 0) {
+			printf("Written failed\n");
 			pthread_exit(NULL);
 		}
-		nextThreadIndex = findNextStep();
 	  } else if (nextThreadIndex == -2) {
 		  rv = writeToOutputFile();
 		  if (rv != 0) {
+			  printf("Written failed\n");
 			  pthread_exit(NULL);
 		  }
 		  pthread_exit(NULL);
@@ -198,9 +199,10 @@ int main (int argc, char *argv[]) {
 	  exit(EXIT_FAILURE);
   }
   numOfThreads = argc-2;
-  printf("Hello, creating %s from %d input files\n",argv[1],numOfThreads);
+  printf("Hello, creating %s from %d input files\n", argv[1], numOfThreads);
   inputFilesPointer = malloc((argc-2)*sizeof(*inputFilesPointer));
   if (inputFilesPointer == NULL) {
+       	  printf("Malloc not succedded for inputFilesPointer\n");
   }
   for (i = 0; i<argc-2; i++) {
 	  inputFilesPointer[i] = argv[i+2];
@@ -210,6 +212,7 @@ int main (int argc, char *argv[]) {
   stillRunning = (bool*)calloc(numOfThreads+1, sizeof(bool));
   finishedXoring = (bool*)calloc(numOfThreads+1, sizeof(bool));
   if (thread_ids == NULL || threads == NULL || stillRunning == NULL || finishedXoring == NULL) {
+	  printf("cannot calloc one of the internal lists of the prog\n");
   }
 
   //Initialize mutex and condition variable objects
@@ -220,6 +223,8 @@ int main (int argc, char *argv[]) {
 		  printf("ERROR in cond_init()\n%s\n",strerror(rv));
 		  exit(EXIT_FAILURE);
 	  }
+	  stillRunning[i] = true;
+	  finishedXoring[i] = false;
   }
 
   //For portability, explicitly create threads in a joinable state
@@ -241,6 +246,7 @@ int main (int argc, char *argv[]) {
 	  }
   }
   sleep(1);
+  //Wait for all threads to complete
   for (i=0; i<numOfThreads; i++) {
 	  rv = pthread_join(threads[i], NULL);
 	  if (rv != 0) {                            
@@ -249,7 +255,7 @@ int main (int argc, char *argv[]) {
 	  }
   }
 
-  printf("Created %s with size %d bytes\n", argv[1], sizeOfFile);
+  printf ("Created %s with size %d bytes\n", argv[1], sizeOfFile);
 
   //Clean up and exit
   close(fdOutputFile);

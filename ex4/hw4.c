@@ -53,7 +53,6 @@ int findMyIndex(char *file) {
 int writeToOutputFile() {
 	int rv;
 	int i;
-	printf("In writeToOutputFile()\n");
 	rv = write(fdOutputFile, chunk, sizeOfChunk);
 	if (rv < 0) {
 		printf("Could not write chunk to data file\n");
@@ -84,10 +83,10 @@ int writeToOutputFile() {
 int findNextStep() {
 	int i;
 	bool notFinished = false;
-	printf("In findNextIndex()\n");
 	for (i = 0; i < numOfThreads; i++) {
-		if (finishedXoring[i] == '\0' || (stillRunning[i] == true && finishedXoring[i] == false)) {
+		if ((stillRunning[i] == true && finishedXoring[i] == false)) {
 			printf("Find next step for unfinished thread in index %d for file %s\n",i, inputFilesPointer[i]);
+			printf("Thread %d: finishedXoring: %d, stillRunning: %d\n",i, finishedXoring[i], stillRunning[i]);
 			notFinished = true;
 			return i;
 		}
@@ -100,10 +99,12 @@ int findNextStep() {
 		printf("Not all threads are finished and all are done xoring\n");
 		return -1;
 	} else {
+		for (i = 0; i < numOfThreads; i++) {
+			printf("Thread %d: finishedXoring: %d, stillRunning: %d\n",i, finishedXoring[i], stillRunning[i]);
+		}
 		printf("All threads reached EOF\n");
 		return -2;
 	}
-	printf("Finished with findNextIndex() function\n");
 }
 //----------------------------------------------------------------------------
 void *xor(void *t) {
@@ -118,14 +119,12 @@ void *xor(void *t) {
   int indexOfThread;
 //  pthread_t myTID = pthread_self();
 
-  printf("In xor funxtion\n");
   //open the relevant file
   fd = open(file,O_RDONLY);
   if (fd < 0) {
 	  printf("one of the threads could not open file %s\n",file);
 	  pthread_exit(NULL);
   }
-  printf("After open of input file\n");
   while (!fileEnded) {
 	  printf("In while - file not ended\n");
 	  numOfBytesRead = read(fd, &buffer, (1024*1024));
@@ -137,9 +136,7 @@ void *xor(void *t) {
 		  printf("Reached the end of the file - %s\n", file);
 		  fileEnded = true;
 	  }
-	  printf("Before find my index\n");
 	  indexOfThread = findMyIndex(file);
-	  printf("After find my index\n");
       	  rv = pthread_mutex_lock(&writeToBuffer);
 	  printf("After starting lock, Thread : %d, is in lock block\n", indexOfThread);
 	  if (rv != 0) {
@@ -150,12 +147,10 @@ void *xor(void *t) {
 	  while (needToDoCondWait) {
 		  rv = pthread_cond_wait(&wakeUp, &writeToBuffer);
 	  }
-	  printf("After wait for condition\n");
 	  if (rv != 0) {
 		  printf("ERROR in cond_wait()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
-	  printf("Before xoring to buffer\n");
 	  for (i = 0; i<numOfBytesRead; i++) {
 		  chunk[i] = chunk[i]^buffer[i];
 		  buffer[i] = '\0';
@@ -166,7 +161,6 @@ void *xor(void *t) {
 	  printf("Finished Xoring thread in index %d\n",indexOfThread);
 	  stillRunning[indexOfThread] = !fileEnded;
 	  finishedXoring[indexOfThread] = true;
-	  printf("Before finding next thread\n");
 	  nextThreadIndex = findNextStep();
 	  printf("After finding next thread\n");
 	  if (nextThreadIndex == -1) {
@@ -177,9 +171,6 @@ void *xor(void *t) {
 			printf("Written failed\n");
 			pthread_exit(NULL);
 		}
-		printf("Before finding next after wriiting\n");
-		nextThreadIndex = findNextStep();
-		printf("After next thread finding\n");
 	  } else if (nextThreadIndex == -2) {
 		  printf("Before writing to file\n");
 		  rv = writeToOutputFile();
@@ -267,6 +258,8 @@ int main (int argc, char *argv[]) {
 		  printf("ERROR in cond_init()\n%s\n",strerror(rv));
 		  exit(EXIT_FAILURE);
 	  }
+	  stillRunning[i] = true;
+	  finishedXoring[i] = false;
   }
 
   //For portability, explicitly create threads in a joinable state
