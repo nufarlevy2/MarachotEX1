@@ -27,6 +27,7 @@ char** inputFilesPointer;
 bool needToDoCondWait = 0;
 int sizeOfFile = 0;
 int sizeOfChunk = 0;
+bool WaitForWriteToBeFinished = true;
 
 //decleration of help functions
 int findMyIndex(char *file);
@@ -68,6 +69,7 @@ int writeToOutputFile() {
 	for (i = 0; i<(1024*1024); i++) {
 		chunk[i] = '\0';
 	}
+	WaitForWriteToBeFinished = false;
 	return 0;
 }
 
@@ -112,13 +114,14 @@ void *xor(void *t) {
 	  printf("one of the threads could not open file %s\n",file);
 	  pthread_exit(NULL);
   }
+  indexOfThread = findMyIndex(file);
   while (!fileEnded) {
-	  indexOfThread = findMyIndex(file);
 	  numOfBytesRead = read(fd, &buffer, (1024*1024));
 	  if (numOfBytesRead < 0) {
 		  printf("Could not read from file - %s\n", file);
 		  pthread_exit(NULL);
-	  } if (numOfBytesRead < (1024*1024)) {
+//	  } if (numOfBytesRead < (1024*1024)) {
+	  } if (numOfBytesRead == 0) {
 		  fileEnded = true;
 	  }
       	  rv = pthread_mutex_lock(&writeToBuffer);
@@ -126,9 +129,9 @@ void *xor(void *t) {
 		  printf("ERROR in lock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
-	  while (needToDoCondWait) {
-		  rv = pthread_cond_wait(&wakeUp, &writeToBuffer);
-	  }
+//	  while (needToDoCondWait) {
+//		  rv = pthread_cond_wait(&wakeUp, &writeToBuffer);
+//	  }
 	  if (rv != 0) {
 		  printf("ERROR in cond_wait()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
@@ -161,13 +164,15 @@ void *xor(void *t) {
 		  printf("ERROR in cond_signal()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);                            
 	  }
+	  stillRunning[indexOfThread] = !fileEnded;
 	  rv = pthread_mutex_unlock(&writeToBuffer);
 	  if (rv != 0) {
 		  printf("ERROR in Unlock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
+	  } 
+	  while (WaitForWriteToBeFinished) {
+		  sleep(0.0001);
 	  }
-	  stillRunning[indexOfThread] = !fileEnded;
-	  sleep(0.1);
   }
   close(fd);
   pthread_exit(NULL);
@@ -193,7 +198,7 @@ int main (int argc, char *argv[]) {
 		  exit(EXIT_FAILURE);
 	  }
   }
-  fdOutputFile = open(argv[1], O_TRUNC | O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IXUSR);
+  fdOutputFile = open(argv[1], O_TRUNC | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR | S_IXUSR);
   if (fdOutputFile < 0) {
 	  printf("could not open output file %s\n",argv[1]);
 	  exit(EXIT_FAILURE);
