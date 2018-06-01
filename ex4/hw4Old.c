@@ -41,6 +41,7 @@ int findMyIndex(char *file) {
 	for (i = 0; i < numOfThreads; i++) {
 		if (strstr(inputFilesPointer[i],file)) {
 			indexOfThread = i;
+			printf("Found that the index of the thread is %d of file %s file in list is %s\n",indexOfThread, file, inputFilesPointer[i]);
 			return indexOfThread;
 		}
 	}
@@ -65,6 +66,7 @@ int writeToOutputFile() {
 	printf("Written all chunk to output file\n");
 	for (i = 0; i < numOfThreads; i++) {
 		finishedXoring[i] = false;
+  		printf("After writen to file thread in place %d has putten false in finished xoring\n",i);
 	}
 	for (i = 0; i<(1024*1024); i++) {
 		chunk[i] = '\0';
@@ -81,11 +83,13 @@ int findNextStep() {
 	bool notFinished = false;
 	for (i = 0; i < numOfThreads; i++) {
 		if ((stillRunning[i] == true && finishedXoring[i] == false)) {
+			printf("Find next step for unfinished thread in index %d for file %s\n",i, inputFilesPointer[i]);
 			printf("Thread %d: finishedXoring: %d, stillRunning: %d\n",i, finishedXoring[i], stillRunning[i]);
 			notFinished = true;
 			return i;
 		}
 		else if (stillRunning[i] == true) {
+			printf("Still running!!!!!!\n");
 			notFinished = true;
 		}
 	}
@@ -122,11 +126,12 @@ void *xor(void *t) {
   while (!fileEnded) {
 	  indexOfThread = findMyIndex(file);
 	  numOfBytesRead = read(fd, &buffer, (1024*1024));
-	  printf("Num of bytes = %d for thread in index %d fileSize is %d\n",numOfBytesRead, indexOfThread, sizeOfFile);
+	  printf("Num of bytes = %d for thread in index %d\n",numOfBytesRead, indexOfThread);
 	  if (numOfBytesRead < 0) {
 		  printf("Could not read from file - %s\n", file);
 		  pthread_exit(NULL);
 	  } if (numOfBytesRead < (1024*1024)) {
+		  printf("Reached the end of the file - %s in index %d\n", file, indexOfThread);
 		  fileEnded = true;
 	  }
       	  rv = pthread_mutex_lock(&writeToBuffer);
@@ -150,9 +155,12 @@ void *xor(void *t) {
 		  sizeOfChunk = numOfBytesRead;
 	  }
 	  printf("Finished Xoring thread in index %d\n",indexOfThread);
+	  stillRunning[indexOfThread] = !fileEnded;
 	  finishedXoring[indexOfThread] = true;
 	  nextThreadIndex = findNextStep();
+	  printf("After finding next thread for thread %d\n", indexOfThread);
 	  if (nextThreadIndex == -1) {
+		printf("Before writing to file in thread %d\n", indexOfThread);
 		rv = writeToOutputFile();
 		printf("After writing to file in thread %d\n", indexOfThread);
 		if (rv != 0) {
@@ -160,12 +168,14 @@ void *xor(void *t) {
 			pthread_exit(NULL);
 		}
 	  } else if (nextThreadIndex == -2) {
+		  printf("Before writing to file in thread %d\n", indexOfThread);
 		  rv = writeToOutputFile();
 		  printf("After writing to file in thread %d\n", indexOfThread);
 		  if (rv != 0) {
 			  printf("Written failed\n");
 			  pthread_exit(NULL);
 		  }
+		  printf("Got -2 in findNextStep function in thread %d\n", indexOfThread);
 		  pthread_exit(NULL);
 	  }
    	  rv = pthread_cond_broadcast(&wakeUp);
@@ -180,7 +190,6 @@ void *xor(void *t) {
 		  printf("ERROR in Unlock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
-	  stillRunning[indexOfThread] = !fileEnded;
 	  sleep(0.1);
   }
   printf("Finished with file - %s in index %d\n",file, indexOfThread);
@@ -202,6 +211,10 @@ int main (int argc, char *argv[]) {
 	  printf("\nWrong use in this function! please insert\n./hw4.c <outputFilePath> <inputFilesPath...>\n");
 	  exit(EXIT_FAILURE);
   }
+//  if (access(argv[1],W_OK) != 0) {
+//	  printf("\nFile \"%s\" does not exist or you do not have the read permissions\n", argv[1]);
+//	  exit(EXIT_FAILURE);
+ // } 
   for (i = 2; i<argc; i++) {
 	  if (access(argv[i],R_OK) != 0) {
 		  printf("\nFile \"%s\" does not exist or you do not have the read permissions\n", argv[i]);
@@ -214,13 +227,13 @@ int main (int argc, char *argv[]) {
 	  exit(EXIT_FAILURE);
   }
   numOfThreads = argc-2;
-  printf("Hello, creating %s from %d input files\n",argv[1], numOfThreads);
   inputFilesPointer = malloc((argc-2)*sizeof(*inputFilesPointer));
   if (inputFilesPointer == NULL) {
        	  printf("Malloc not succedded for inputFilesPointer\n");
   }
   for (i = 0; i<argc-2; i++) {
 	  inputFilesPointer[i] = argv[i+2];
+	  printf("\n\ninputFilesPointer[i]: i = %d, value = %s\n\n",i,inputFilesPointer[i]);
   }
   thread_ids = (pthread_t*)calloc(numOfThreads+1, sizeof(pthread_t));
   threads = (pthread_t*)calloc(numOfThreads+1, sizeof(pthread_t));
@@ -262,6 +275,14 @@ int main (int argc, char *argv[]) {
 	  }
   }
   sleep(1);
+//  if (numOfThreads > 1) {
+//	  printf("Sending signal from main to the first thread\n");
+//	  rv = pthread_cond_signal(&conds[0]);
+//	  if (rv != 0) {
+//		  printf("ERROR in cond_signal()\n%s\n",strerror(rv));
+//		  pthread_exit(NULL);
+//	  }
+//  }
   //Wait for all threads to complete
   for (i=0; i<numOfThreads; i++) {
 	  rv = pthread_join(threads[i], NULL);

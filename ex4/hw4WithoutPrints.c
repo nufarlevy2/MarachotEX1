@@ -113,6 +113,7 @@ void *xor(void *t) {
 	  pthread_exit(NULL);
   }
   while (!fileEnded) {
+	  indexOfThread = findMyIndex(file);
 	  numOfBytesRead = read(fd, &buffer, (1024*1024));
 	  if (numOfBytesRead < 0) {
 		  printf("Could not read from file - %s\n", file);
@@ -120,7 +121,6 @@ void *xor(void *t) {
 	  } if (numOfBytesRead < (1024*1024)) {
 		  fileEnded = true;
 	  }
-	  indexOfThread = findMyIndex(file);
       	  rv = pthread_mutex_lock(&writeToBuffer);
 	  if (rv != 0) {
 		  printf("ERROR in lock()\n%s\n",strerror(rv));
@@ -140,7 +140,6 @@ void *xor(void *t) {
 	  if (sizeOfChunk < numOfBytesRead) {
 		  sizeOfChunk = numOfBytesRead;
 	  }
-	  stillRunning[indexOfThread] = !fileEnded;
 	  finishedXoring[indexOfThread] = true;
 	  nextThreadIndex = findNextStep();
 	  if (nextThreadIndex == -1) {
@@ -167,6 +166,7 @@ void *xor(void *t) {
 		  printf("ERROR in Unlock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
+	  stillRunning[indexOfThread] = !fileEnded;
 	  sleep(0.1);
   }
   close(fd);
@@ -199,7 +199,7 @@ int main (int argc, char *argv[]) {
 	  exit(EXIT_FAILURE);
   }
   numOfThreads = argc-2;
-  printf("Hello, creating %s from %d input files\n", argv[1], numOfThreads);
+  printf("Hello, creating %s from %d input files\n",argv[1], numOfThreads);
   inputFilesPointer = malloc((argc-2)*sizeof(*inputFilesPointer));
   if (inputFilesPointer == NULL) {
        	  printf("Malloc not succedded for inputFilesPointer\n");
@@ -255,7 +255,7 @@ int main (int argc, char *argv[]) {
 	  }
   }
 
-  printf ("Created %s with size %d bytes\n", argv[1], sizeOfFile);
+  printf ("Created %s with size %d bytes.\n", argv[1], sizeOfFile);
 
   //Clean up and exit
   close(fdOutputFile);
