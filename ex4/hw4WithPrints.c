@@ -47,7 +47,7 @@ int findMyIndex(char *file) {
 	}
 	return indexOfThread;
 }
-//write chunk to output file
+
 int writeToOutputFile() {
 	int rv;
 	int i;
@@ -63,6 +63,7 @@ int writeToOutputFile() {
 	}
 	sizeOfFile += sizeOfChunk;
 	sizeOfChunk = 0;
+	printf("Written all chunk to output file\n");
 	for (i = 0; i<(1024*1024); i++) {
 		chunk[i] = '\0';
 	}
@@ -72,14 +73,30 @@ int writeToOutputFile() {
 
 // finding next step to thread - wake up another thread or write to buffer
 // if find index return the index
-// else returns -1
+// if all thread finished writing to chunk return -1
+// if all threads reached eof return -2
 int findNextStep() {
 	int i;
+//	bool notFinished = false;
 	for (i = 0; i < numOfThreads; i++) {
 		if ((stillRunning[i] == true && finishedXoring[i] == false)) {
+			printf("Thread %d: finishedXoring: %d, stillRunning: %d\n",i, finishedXoring[i], stillRunning[i]);
 			return i;
 		}
+//		else if (stillRunning[i] == true) {
+//			notFinished = true;
+//		}
 	}
+//	if (notFinished) {
+//		printf("Not all threads are finished and all are done xoring\n");
+//		return -1;
+//	} else {
+//		for (i = 0; i < numOfThreads; i++) {
+//			printf("Thread %d: finishedXoring: %d, stillRunning: %d\n",i, finishedXoring[i], stillRunning[i]);
+//		}
+//		printf("All threads reached EOF\n");
+//		return -2;
+//	}
 	return -1;
 }
 //----------------------------------------------------------------------------
@@ -93,28 +110,39 @@ void *xor(void *t) {
   int nextThreadIndex;
   int rv;
   int indexOfThread;
+//  pthread_t myTID = pthread_self();
 
   //open the relevant file
   fd = open(file,O_RDONLY);
   if (fd < 0) {
-	  printf("ERROR one of the threads could not open file %s\n",file);
+	  printf("one of the threads could not open file %s\n",file);
 	  pthread_exit(NULL);
   }
   indexOfThread = findMyIndex(file);
+  printf("Found thread in index %d for file %s\n",indexOfThread, file);
   numOfBytesRead = read(fd, &buffer, (1024*1024));
+  printf("Num of bytes = %d for thread in index %d fileSize is %d\n",numOfBytesRead, indexOfThread, sizeOfFile);
   if (numOfBytesRead < 0) {
 	  printf("Could not read from file - %s\n", file);
 	  pthread_exit(NULL);
   } else if (numOfBytesRead == 0) {
+	  printf("Reached the end of the file for thread in index %d\n",indexOfThread);
 	  fileEnded = true;
-	  stillRunning[indexOfThread] = !fileEnded;
   }
   while (!fileEnded) {
       	  rv = pthread_mutex_lock(&writeToBuffer);
+	  printf("After starting lock, Thread : %d, is in lock block\n", indexOfThread);
 	  if (rv != 0) {
 		  printf("ERROR in lock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
+//	  while (needToDoCondWait) {
+//		  rv = pthread_cond_wait(&wakeUp, &writeToBuffer);
+//	  }
+//	  if (rv != 0) {
+//		  printf("ERROR in cond_wait()\n%s\n",strerror(rv));
+//		  pthread_exit(NULL);
+//	  }
 	  for (i = 0; i<numOfBytesRead; i++) {
 		  chunk[i] = chunk[i]^buffer[i];
 		  buffer[i] = '\0';
@@ -122,38 +150,46 @@ void *xor(void *t) {
 	  
 	  if (sizeOfChunk < numOfBytesRead) {
 		  sizeOfChunk = numOfBytesRead;
+		  printf("For index %d, size of chunk has bigger to:  %d\n",indexOfThread, sizeOfChunk);
 	  }
+	  printf("Finished Xoring thread in index %d\n",indexOfThread);
 	  finishedXoring[indexOfThread] = true;
 	  nextThreadIndex = findNextStep();
 	  if (nextThreadIndex < 0) {
 		rv = writeToOutputFile();
+		printf("After writing to file in thread %d\n", indexOfThread);
 		if (rv != 0) {
-			printf("ERROR could not write to file\n");
+			printf("Written failed\n");
 			pthread_exit(NULL);
 		}
 		stillRunning[indexOfThread] = !fileEnded;
 		rv = pthread_cond_broadcast(&wakeUp);
+		printf("After waking up the next thread in thread index %d\n",indexOfThread);
 		if (rv != 0) {
-			printf("ERROR in cond_broadcast()\n%s\n",strerror(rv));
+			printf("ERROR in cond_signal()\n%s\n",strerror(rv));
 			pthread_exit(NULL);
 		}
 	  } else {
 		  pthread_cond_wait(&wakeUp, &writeToBuffer);
 	  }
+	  printf("Before unlocking the thread in index %d\n", indexOfThread);
 	  rv = pthread_mutex_unlock(&writeToBuffer);
 	  if (rv != 0) {
 		  printf("ERROR in Unlock()\n%s\n",strerror(rv));
 		  pthread_exit(NULL);
 	  }
 	  numOfBytesRead = read(fd, &buffer, (1024*1024));
+	  printf("Num of bytes = %d for thread in index %d fileSize is %d\n",numOfBytesRead, indexOfThread, sizeOfFile);
 	  if (numOfBytesRead < 0) {
 		  printf("Could not read from file - %s\n", file);
 		  pthread_exit(NULL);
 	  } else if (numOfBytesRead == 0) {
+		  printf("Reached the end of the file for thread in index %d\n",indexOfThread);
 		  fileEnded = true;
 		  stillRunning[indexOfThread] = false;
 	  }
   }
+  printf("Finished with file - %s in index %d\n",file, indexOfThread);
   close(fd);
   pthread_exit(NULL);
 }
@@ -202,6 +238,7 @@ int main (int argc, char *argv[]) {
 
   //Initialize mutex and condition variable objects
   pthread_mutex_init(&writeToBuffer, NULL);
+  printf("Num of threads are %d\n",numOfThreads);
   for (i = 0; i<numOfThreads; i++) {
 	  rv = pthread_cond_init(&wakeUp, NULL);
 	  if (rv != 0) {
