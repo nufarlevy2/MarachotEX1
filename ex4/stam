@@ -1,0 +1,1539 @@
+Hello, creating outfile2 from 4 input files
+Num of threads are 4
+Found thread in index 3 for file file3
+Num of bytes = 1048576 for thread in index 3 fileSize is 0
+After starting lock, Thread : 3, is in lock block
+Found thread in index 2 for file file2
+Num of bytes = 1048576 for thread in index 2 fileSize is 0
+After starting lock, Thread : 2, is in lock block
+Found thread in index 0 for file file0
+Num of bytes = 1048576 for thread in index 0 fileSize is 0
+After starting lock, Thread : 0, is in lock block
+Found thread in index 1 for file file1
+Num of bytes = 1048576 for thread in index 1 fileSize is 0
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 0
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 0
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 0
+Thread 1: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 0
+After starting lock, Thread : 0, is in lock block
+After starting lock, Thread : 1, is in lock block
+Finished Xoring thread in index 2
+Thread 1: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 0
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 1
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 1
+After waking up the next thread in thread index 1
+Before unlocking the thread in index 1
+Num of bytes = 1048576 for thread in index 1 fileSize is 1048576
+After starting lock, Thread : 1, is in lock block
+For index 1, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 1
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 1
+Num of bytes = 1048576 for thread in index 1 fileSize is 1048576
+After starting lock, Thread : 1, is in lock block
+Finished Xoring thread in index 1
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 1
+Num of bytes = 800768 for thread in index 1 fileSize is 1048576
+After starting lock, Thread : 1, is in lock block
+Finished Xoring thread in index 1
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 1
+Num of bytes = 0 for thread in index 1 fileSize is 1048576
+Reached the end of the file for thread in index 1
+After starting lock, Thread : 1, is in lock block
+Finished Xoring thread in index 1
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 1
+Finished with file - file1 in index 1
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 1048576
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 1048576
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 1048576
+After starting lock, Thread : 0, is in lock block
+Num of bytes = 1048576 for thread in index 3 fileSize is 1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 1048576
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 2097152
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 2097152
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 2097152
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 2097152
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 2097152
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 2097152
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 2097152
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 0 fileSize is 2097152
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 3145728
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 3145728
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 3145728
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 3145728
+After starting lock, Thread : 0, is in lock block
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+Num of bytes = 1048576 for thread in index 3 fileSize is 3145728
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 3145728
+After starting lock, Thread : 2, is in lock block
+Num of bytes = 1048576 for thread in index 0 fileSize is 3145728
+Finished Xoring thread in index 2
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 3
+After waking up the next thread in thread index 3
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+For index 3, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 4194304
+After starting lock, Thread : 3, is in lock block
+Num of bytes = 1048576 for thread in index 2 fileSize is 4194304
+Num of bytes = 1048576 for thread in index 0 fileSize is 4194304
+Finished Xoring thread in index 3
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 5242880
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 5242880
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 5242880
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 5242880
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 5242880
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 5242880
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 5242880
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 5242880
+After starting lock, Thread : 0, is in lock block
+Num of bytes = 1048576 for thread in index 3 fileSize is 5242880
+Num of bytes = 1048576 for thread in index 2 fileSize is 5242880
+Finished Xoring thread in index 0
+Thread 3: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 3
+After waking up the next thread in thread index 3
+Before unlocking the thread in index 3
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 6291456
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 1048576 for thread in index 3 fileSize is 6291456
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Num of bytes = 0 for thread in index 3 fileSize is 6291456
+Reached the end of the file for thread in index 3
+After starting lock, Thread : 3, is in lock block
+Finished Xoring thread in index 3
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 3
+Finished with file - file3 in index 3
+Num of bytes = 1048576 for thread in index 0 fileSize is 6291456
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 7340032
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 2 fileSize is 7340032
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Num of bytes = 1048576 for thread in index 0 fileSize is 8388608
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 8388608
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 9437184
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 2 fileSize is 9437184
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Num of bytes = 1048576 for thread in index 0 fileSize is 10485760
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 10485760
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Num of bytes = 1048576 for thread in index 2 fileSize is 11534336
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 11534336
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 12582912
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 12582912
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 12582912
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 12582912
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 12582912
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 12582912
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 0 fileSize is 12582912
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 13631488
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 13631488
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 13631488
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 13631488
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 13631488
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 13631488
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 2 fileSize is 13631488
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 14680064
+After starting lock, Thread : 2, is in lock block
+Num of bytes = 1048576 for thread in index 0 fileSize is 14680064
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Num of bytes = 1048576 for thread in index 2 fileSize is 15728640
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 15728640
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 16777216
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 16777216
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 16777216
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 16777216
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 16777216
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 16777216
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 0 fileSize is 16777216
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 17825792
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 17825792
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 17825792
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 17825792
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 17825792
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 17825792
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 2 fileSize is 17825792
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 18874368
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 18874368
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 18874368
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 18874368
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 18874368
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Thread 0: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 0 fileSize is 18874368
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 0
+After waking up the next thread in thread index 0
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 19922944
+After starting lock, Thread : 0, is in lock block
+For index 0, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 1048576 for thread in index 0 fileSize is 19922944
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 349120 for thread in index 0 fileSize is 19922944
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Num of bytes = 0 for thread in index 0 fileSize is 19922944
+Reached the end of the file for thread in index 0
+After starting lock, Thread : 0, is in lock block
+Finished Xoring thread in index 0
+Thread 2: finishedXoring: 0, stillRunning: 1
+Before unlocking the thread in index 0
+Finished with file - file0 in index 0
+Num of bytes = 1048576 for thread in index 2 fileSize is 19922944
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 20971520
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 22020096
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 23068672
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 24117248
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 25165824
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 26214400
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 27262976
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 28311552
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 29360128
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 30408704
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 31457280
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 32505856
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 33554432
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 34603008
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 35651584
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 36700160
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 37748736
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 38797312
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 39845888
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 40894464
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 41943040
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 42991616
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 44040192
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 45088768
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 46137344
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 47185920
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 48234496
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 49283072
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 50331648
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 51380224
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 52428800
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 53477376
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 54525952
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 55574528
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 56623104
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 57671680
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 58720256
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 1048576 for thread in index 2 fileSize is 59768832
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  1048576
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 387488 for thread in index 2 fileSize is 60817408
+After starting lock, Thread : 2, is in lock block
+For index 2, size of chunk has bigger to:  387488
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Num of bytes = 0 for thread in index 2 fileSize is 61204896
+Reached the end of the file for thread in index 2
+After starting lock, Thread : 2, is in lock block
+Finished Xoring thread in index 2
+Not all threads are finished and all are done xoring
+Written all chunk to output file
+After writing to file in thread 2
+After waking up the next thread in thread index 2
+Before unlocking the thread in index 2
+Finished with file - file2 in index 2
+Created outfile2 with size 61204896 bytes.
