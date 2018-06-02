@@ -1,8 +1,3 @@
-/*
- *  Taken from:
- *  https://computing.llnl.gov/tutorials/pthreads/#ConditionVariables
- *
- * */
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
