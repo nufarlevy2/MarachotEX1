@@ -18,13 +18,9 @@ in_addr_t hostNameToIp(char* serverHost);
 
 unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length);
 
-void sendLengthToServer(int socketNum,unsigned int length);
+void convertToChars(unsigned int num, char buffer[]);
 
-void sendRandomCharsToServer(char* buffer,int socketNum,unsigned int length);
-
-void unsignedIntToChars(unsigned int num, char buffer[]);
-
-unsigned int charsToUnsignedInt(char* buffer);
+unsigned int convertToUnsignedInt(char* buffer);
 
 
 int main(int argc, char *argv[]) {
@@ -149,86 +145,67 @@ unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length)
 
 	char numOfPrintablesInChars[4];
     	unsigned int numOfPrintableCharacters;
-	ssize_t numOfBytesRead;
-	ssize_t currentRead;
-	ssize_t anotherRead;
-	
-	//sending the length to the server
-	
-    	sendLengthToServer(socketNum,length);
-    	sendRandomCharsToServer(buffer,socketNum,length);
-    	memset(numOfPrintablesInChars, 0, sizeof(numOfPrintablesInChars));
-    	numOfBytesRead = read(socketNum, numOfPrintablesInChars, sizeof(unsigned int));
-	if (numOfBytesRead < 0) {
-		perror("Could not read from urandom");
-		exit(EXIT_FAILURE);
+	ssize_t numOfBytesReadWrote;
+	ssize_t currentReadWrite;
+	ssize_t anotherReadWrite;	
+	char lengthInChars[sizeof(unsigned int)];
+	int lengthToReadWrite;
+
+	// sending length to server
+	lengthToReadWrite = (int)sizeof(unsigned int);
+	convertToChars(length,lengthInChars);
+	numOfBytesReadWrote = (int)write(socketNum, lengthInChars, (size_t)lengthToReadWrite);
+	if (numOfBytesReadWrote < 0) {
+		perror("Could not write length to server");
+		exit(EXIT_FAILURE);                         
 	}
-    	while (numOfBytesRead < (int)sizeof(unsigned int)) {        
-		currentRead = numOfBytesRead;
-		anotherRead = read(socketNum, numOfPrintablesInChars+currentRead, sizeof(unsigned int)-currentRead);
-		if (anotherRead < 0) {
-			perror("Could not read from urandom");
+   	while(numOfBytesReadWrote < lengthToReadWrite) {
+		currentReadWrite = numOfBytesReadWrote;
+		anotherReadWrite = (int)write(socketNum, lengthInChars+currentReadWrite, (size_t)lengthToReadWrite-currentReadWrite);
+		if (anotherReadWrite < 0) {
+			perror("Could not write length to server");
 			exit(EXIT_FAILURE);
 		}
-		numOfBytesRead = numOfBytesRead + anotherRead;
+		numOfBytesReadWrote = numOfBytesReadWrote + anotherReadWrite;
 	}
-    	numOfPrintableCharacters = charsToUnsignedInt(numOfPrintablesInChars);
+
+	// sending data to server
+	numOfBytesReadWrote = (int)write(socketNum, buffer, (size_t)length);
+	if (numOfBytesReadWrote < 0) {
+		perror("Could not write data to server");
+		exit(EXIT_FAILURE);
+	}
+	while( numOfBytesReadWrote < length ) {
+		currentReadWrite = numOfBytesReadWrote;
+		anotherReadWrite = (int)write(socketNum, buffer+currentReadWrite, (size_t)length-currentReadWrite);
+		if (anotherReadWrite < 0) {
+			perror("Could not write length to server");
+			exit(EXIT_FAILURE);
+		}
+		numOfBytesReadWrote = numOfBytesReadWrote + anotherReadWrite;
+	}	
+
+	//recieving response from server
+    	memset(numOfPrintablesInChars, 0, sizeof(numOfPrintablesInChars));
+    	numOfBytesReadWrote = read(socketNum, numOfPrintablesInChars, (size_t)lengthToReadWrite);
+	if (numOfBytesReadWrote < 0) {
+		perror("Could not read from server");
+		exit(EXIT_FAILURE);
+	}
+    	while (numOfBytesReadWrote < lengthToReadWrite) { 
+		currentReadWrite = numOfBytesReadWrote;
+		anotherReadWrite = read(socketNum, numOfPrintablesInChars+currentReadWrite, (size_t)lengthToReadWrite-currentReadWrite);
+		if (anotherReadWrite < 0) {
+			perror("Could not read from server");
+			exit(EXIT_FAILURE);
+		}
+		numOfBytesReadWrote = numOfBytesReadWrote + anotherReadWrite;
+	}
+    	numOfPrintableCharacters = convertToUnsignedInt(numOfPrintablesInChars);
     	return numOfPrintableCharacters;
 }
 
-void sendLengthToServer(int socketNum,unsigned int length)
-{
-    //############# send length N number of bytes to server ###########
-    char lengthBuffer[sizeof(unsigned int)];
-    int totalSent;
-    int notWritten;
-    int lastWrite;
-
-    unsignedIntToChars(length,lengthBuffer);
-    notWritten = (int)sizeof(unsigned int); // how much we have left to write
-    totalSent = 0; // how much we've written so far
-    lastWrite = -1; // how much we've written in last write() call */
-
-    // keep looping until nothing left to write
-    while( notWritten > 0 )
-    {
-        lastWrite = (int) write(socketNum, lengthBuffer + totalSent, (size_t)notWritten);
-        if ( lastWrite < 0)
-        {
-            perror("ERROR12");
-            exit(-1);
-        }
-        totalSent  += lastWrite;
-        notWritten -= lastWrite;
-    }
-}
-
-void sendRandomCharsToServer(char* buffer,int socketNum,unsigned int length)
-{
-    //######### send N random chars to server ######################
-    int totalSent;
-    int notWritten;
-    int lastWrite;
-
-    notWritten = length; // how much bytes we have left to write
-    totalSent = 0; // how much we've written so far
-    lastWrite = -1; // how much we've written in last write() call */
-
-    // keep looping until nothing left to write
-    while( notWritten > 0 )
-    {
-        lastWrite = (int) write(socketNum, buffer + totalSent, (size_t)notWritten);
-        if ( lastWrite < 0)
-        {
-            perror("ERROR13");
-            exit(-1);
-        }
-        totalSent  += lastWrite;
-        notWritten -= lastWrite;
-    }
-}
-
-unsigned int charsToUnsignedInt(char* buffer)
+unsigned int convertToUnsignedInt(char* buffer)
 {
     unsigned int N;
     N = (unsigned int)(buffer[0]) << 24;
@@ -239,7 +216,7 @@ unsigned int charsToUnsignedInt(char* buffer)
 }
 
 
-void unsignedIntToChars(unsigned int num, char buffer[])
+void convertToChars(unsigned int num, char buffer[])
 {
     buffer[0] = (char)((num >> 24) & 0xFF);
     buffer[1] = (char)((num >> 16) & 0xFF);
