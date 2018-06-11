@@ -1,3 +1,6 @@
+#define _POSIX_C_SOURCE 200112L
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -7,6 +10,8 @@
 #include <netdb.h>
 #include <sys/fcntl.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <string.h>
 
 
 in_addr_t hostNameToIp(char* serverHost);
@@ -75,13 +80,12 @@ int main(int argc, char *argv[]) {
 	}
 	
 	// getting the tandom characters to buffer
-	ssize_t lastResult;
 	buffer = (char*)malloc(sizeof(char)*length);
 	if (buffer == NULL) {
 		perror("Error in mallocing buffer");
 		exit(EXIT_FAILURE);
 	}
-	memset(buffer,0,sizeof(buffer));
+	memset(buffer,0,length);
 	randomFile = open("/dev/urandom", O_RDONLY);
 	if (randomFile < 0) {
 		perror("Could not open urandom!");
@@ -113,16 +117,17 @@ int main(int argc, char *argv[]) {
 in_addr_t hostNameToIp(char* serverHost) {
 	int rv;
     	struct in_addr serverInAddr;
-    	struct addrinfo configs, *serverInfo;
-    	in_addr_t ip;
-     
-	memset(&serverInAddr, 0, sizeof(serverInAddr));
-    	memset(&configs, 0, sizeof(configs));
+    	struct addrinfo hints;
+	struct addrinfo *serverInfo;
+	in_addr_t ip;
+     	
+	memset(&serverInAddr, 0, sizeof(struct in_addr));
+    	memset(&hints, 0, sizeof(struct addrinfo));
 	rv = inet_aton(serverHost, &serverInAddr);
     	if (rv == 0) {
-        	configs.ai_family = AF_INET;
-	        configs.ai_socktype = SOCK_STREAM;
-		rv = getaddrinfo(serverHost , NULL, &configs , &serverInfo);
+        	hints.ai_family = AF_INET;
+	        hints.ai_socktype = SOCK_STREAM;
+		rv = getaddrinfo(serverHost , NULL, &hints , &serverInfo);
         	if (rv != 0) {
 	    		perror("Error in getaddrinfo()");
 	    		exit(EXIT_FAILURE);
