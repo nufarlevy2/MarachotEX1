@@ -113,16 +113,16 @@ int main(int argc, char *argv[]) {
 in_addr_t hostNameToIp(char* serverHost) {
 	int rv;
     	struct in_addr serverInAddr;
-    	struct addrinfo configs, *serverInfo;
+    	struct addrinfo hints, *servinfo;
     	in_addr_t ip;
      
 	memset(&serverInAddr, 0, sizeof(serverInAddr));
-    	memset(&configs, 0, sizeof(configs));
+    	memset(&hints, 0, sizeof(hints));
 	rv = inet_aton(serverHost, &serverInAddr);
     	if (rv == 0) {
-        	configs.ai_family = AF_INET;
-	        configs.ai_socktype = SOCK_STREAM;
-		rv = getaddrinfo(serverHost , NULL, &configs , &serverInfo);
+		hints.ai_family = AF_INET;
+	        hints.ai_socktype = SOCK_STREAM;
+		rv = getaddrinfo(serverHost , NULL, &hints , &servinfo);
         	if (rv != 0) {
 	    		perror("Error in getaddrinfo()");
 	    		exit(EXIT_FAILURE);
