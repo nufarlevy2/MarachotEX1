@@ -11,8 +11,6 @@
 #include <sys/fcntl.h>
 #include <sys/wait.h>
 
-#define MAX_UNSIGNED_SHORT 65535
-
 in_addr_t hostNameToIp(char* serverHost);
 
 int getConnection(unsigned short port,in_addr_t serverIP, unsigned int length);
@@ -49,7 +47,7 @@ int main(int argc, char *argv[]) {
     //may need to convert the host name to an IP address first
     serverIP = hostNameToIp(serverHost);
     port = (unsigned short)strtoul(argv[2], NULL, 0);
-    if ((int)port == 0 || (int)port > MAX_UNSIGNED_SHORT)
+    if ((int)port == 0)
     {
         perror("ERROR2: bad port");
         exit(-1);
