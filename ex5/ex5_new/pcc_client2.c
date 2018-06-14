@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
 	}
 	printf("After buffer read\n");
 	//sending data to the server
-    	numOfPrintableCharacters = sendingDataToServer(buffer, socketNum, length);
+    	numOfPrintableCharacters = sendToConnection(buffer, socketNum, length);
 	printf("After sending data to server\n");
     	printf("# of printable characters: %u\n", numOfPrintableCharacters);
     	close(socketNum);
@@ -140,6 +140,84 @@ in_addr_t hostNameToIp(char* serverHost) {
     	}
     	ip = serverInAddr.s_addr;
     	return ip;
+}
+unsigned int sendToConnection(char* bufferToSend,int sockfd,unsigned int length)
+{
+    unsigned int numOfPrintables;
+    char numOfPrintablesBuffer[sizeof(unsigned int)];
+    int bytes_read, lastRead;
+
+    sendLengthToServer(sockfd,length);
+    sendRandomCharsToServer(bufferToSend,sockfd,length);
+
+    //######### get number of printables chars ######################
+    memset(numOfPrintablesBuffer,0,sizeof(numOfPrintablesBuffer));
+    bytes_read = (int) read(sockfd, numOfPrintablesBuffer, (int)sizeof(unsigned int));
+    while ( bytes_read < (int)sizeof(unsigned int))
+    {
+        if (0 > bytes_read)
+        {
+            perror("ERROR11");
+            exit(-1);
+        }
+        lastRead = bytes_read;
+        bytes_read += read(sockfd, numOfPrintablesBuffer+lastRead, sizeof(unsigned int)-lastRead);
+    }
+
+    numOfPrintables = convertToUnsignedInt(numOfPrintablesBuffer);
+    return numOfPrintables;
+}
+
+void sendLengthToServer(int sockfd,unsigned int length)
+{
+    //############# send length N number of bytes to server ###########
+    char lengthBuffer[sizeof(unsigned int)];
+    int totalSent;
+    int notWritten;
+    int lastWrite;
+
+    convertToChars(length,lengthBuffer);
+    notWritten = (int)sizeof(unsigned int); // how much we have left to write
+    totalSent = 0; // how much we've written so far
+    lastWrite = -1; // how much we've written in last write() call */
+
+    // keep looping until nothing left to write
+    while( notWritten > 0 )
+    {
+        lastWrite = (int) write(sockfd, lengthBuffer + totalSent, (size_t)notWritten);
+        if ( lastWrite < 0)
+        {
+            perror("ERROR12");
+            exit(-1);
+        }
+        totalSent  += lastWrite;
+        notWritten -= lastWrite;
+    }
+}
+
+void sendRandomCharsToServer(char* bufferToSend,int sockfd,unsigned int length)
+{
+    //######### send N random chars to server ######################
+    int totalSent;
+    int notWritten;
+    int lastWrite;
+
+    notWritten = length; // how much bytes we have left to write
+    totalSent = 0; // how much we've written so far
+    lastWrite = -1; // how much we've written in last write() call */
+
+    // keep looping until nothing left to write
+    while( notWritten > 0 )
+    {
+        lastWrite = (int) write(sockfd, bufferToSend + totalSent, (size_t)notWritten);
+        if ( lastWrite < 0)
+        {
+            perror("ERROR13");
+            exit(-1);
+        }
+        totalSent  += lastWrite;
+        notWritten -= lastWrite;
+    }
 }
 /*
 unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length) {
