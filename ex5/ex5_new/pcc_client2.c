@@ -15,13 +15,11 @@
 
 
 in_addr_t hostNameToIp(char* serverHost);
-
-unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length);
-
+unsigned int sendToConnection(char* bufferToSend,int sockfd,unsigned int length);
 void convertToChars(unsigned int unsignedIntInput, char buffer[]);
-
+void sendRandomCharsToServer(char* bufferToSend,int sockfd,unsigned int length);
 unsigned int convertToUnsignedInt(char* buffer);
-
+void sendLengthToServer(int sockfd,unsigned int length);
 
 int main(int argc, char *argv[]) {
 	
