@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     //may need to convert the host name to an IP address first
     serverIP = hostNameToIp(serverHost);
     port = (unsigned short)strtoul(argv[2], NULL, 0);
-    if ((int)port == 0)
+    if ((int)port == 0 || (int)port > 65535)
     {
         perror("ERROR2: bad port");
         exit(-1);
