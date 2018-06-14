@@ -18,7 +18,7 @@ in_addr_t hostNameToIp(char* serverHost);
 
 unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length);
 
-void convertToChars(unsigned int num, char buffer[]);
+void convertToChars(unsigned int unsignedIntInput, char buffer[]);
 
 unsigned int convertToUnsignedInt(char* buffer);
 
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 		perror("Not a valid length!");
 		exit(EXIT_FAILURE);    
 	}
-    	
+    	printf("server: %s, port: %s, length: %s\n",argv[1], argv[2], argv[3]);
 	// initilizing all host parameters
 	ip = hostNameToIp(serverHost);
 	socketNum = socket(AF_INET, SOCK_STREAM, 0);
@@ -67,7 +67,7 @@ int main(int argc, char *argv[]) {
 	serverAddr.sin_port = htons(serverPort);
 	serverAddr.sin_family = AF_INET;
 	memset(&serverAddr, 0, sizeof(serverAddr));
-	
+	printf("Before connecting to server\n");	
 	// conecting to server
 	rv = connect(socketNum, (struct sockaddr*) &serverAddr, sizeof(serverAddr));
 	if(rv < 0) {
@@ -101,9 +101,10 @@ int main(int argc, char *argv[]) {
 		}
 		dataRead = dataRead + anotherRead;
 	}
-
+	printf("After buffer read\n");
 	//sending data to the server
     	numOfPrintableCharacters = sendingDataToServer(buffer, socketNum, length);
+	printf("After sending data to server\n");
     	printf("# of printable characters: %u\n", numOfPrintableCharacters);
     	close(socketNum);
     	free(buffer);
@@ -140,7 +141,7 @@ in_addr_t hostNameToIp(char* serverHost) {
     	ip = serverInAddr.s_addr;
     	return ip;
 }
-
+/*
 unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length) {
 
 	char numOfPrintablesInChars[4];
@@ -150,15 +151,18 @@ unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length)
 	ssize_t anotherReadWrite;	
 	char lengthInChars[sizeof(unsigned int)];
 	int lengthToReadWrite;
-
+	printf("Sending length\n");
 	// sending length to server
 	lengthToReadWrite = (int)sizeof(unsigned int);
 	convertToChars(length,lengthInChars);
-	numOfBytesReadWrote = (int)write(socketNum, lengthInChars, (size_t)lengthToReadWrite);
+	printf("before write %c%c%c%c\n",lengthInChars[0],lengthInChars[1],lengthInChars[2],lengthInChars[3]);
+	printf("writing socketNum %d, lengthToReadWrite: %d\n",socketNum,lengthToReadWrite);
+	numOfBytesReadWrote = (int) write(socketNum, lengthInChars+0, (size_t)lengthToReadWrite);
 	if (numOfBytesReadWrote < 0) {
 		perror("Could not write length to server");
 		exit(EXIT_FAILURE);                         
 	}
+	printf("after written the first time\n");
    	while(numOfBytesReadWrote < lengthToReadWrite) {
 		currentReadWrite = numOfBytesReadWrote;
 		anotherReadWrite = (int)write(socketNum, lengthInChars+currentReadWrite, (size_t)lengthToReadWrite-currentReadWrite);
@@ -168,7 +172,7 @@ unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length)
 		}
 		numOfBytesReadWrote = numOfBytesReadWrote + anotherReadWrite;
 	}
-
+	printf("Sending data\n");
 	// sending data to server
 	numOfBytesReadWrote = (int)write(socketNum, buffer, (size_t)length);
 	if (numOfBytesReadWrote < 0) {
@@ -184,7 +188,7 @@ unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length)
 		}
 		numOfBytesReadWrote = numOfBytesReadWrote + anotherReadWrite;
 	}	
-
+	printf("recieving response\n");
 	//recieving response from server
     	memset(numOfPrintablesInChars, 0, sizeof(numOfPrintablesInChars));
     	numOfBytesReadWrote = read(socketNum, numOfPrintablesInChars, (size_t)lengthToReadWrite);
@@ -202,25 +206,26 @@ unsigned int sendingDataToServer(char* buffer,int socketNum,unsigned int length)
 		numOfBytesReadWrote = numOfBytesReadWrote + anotherReadWrite;
 	}
     	numOfPrintableCharacters = convertToUnsignedInt(numOfPrintablesInChars);
+	printf("returning protible letters\n");
     	return numOfPrintableCharacters;
 }
-
+*/
 unsigned int convertToUnsignedInt(char* buffer)
 {
-    unsigned int N;
-    N = (unsigned int)(buffer[0]) << 24;
-    N |= (unsigned int)(buffer[1]) << 16;
-    N |= (unsigned int)(buffer[2]) << 8;
-    N |= (unsigned int)(buffer[3]);
-    return N;
+    unsigned int result = (unsigned int)(buffer[0]) << 24;
+    result |= (unsigned int)(buffer[1]) << 16;
+    result |= (unsigned int)(buffer[2]) << 8;
+    result |= (unsigned int)(buffer[3]);
+    return result;
 }
 
 
-void convertToChars(unsigned int num, char buffer[])
-{
-    buffer[0] = (char)((num >> 24) & 0xFF);
-    buffer[1] = (char)((num >> 16) & 0xFF);
-    buffer[2] = (char)((num >> 8) & 0xFF);
-    buffer[3] = (char)(num & 0xFF);
+void convertToChars(unsigned int unsignedIntInput, char buffer[]) {
+//	printf("converting to chars unsigned int: %d\n",(int)unsignedIntInput);
+    	buffer[0] = (unsigned char)((unsignedIntInput >> 24 & 255));
+    	buffer[1] = (unsigned char)((unsignedIntInput >> 16 & 255));
+    	buffer[2] = (unsigned char)((unsignedIntInput >> 8 & 255));
+    	buffer[3] = (unsigned char)(unsignedIntInput & 255);
+//	printf("buffer is %c%c%c%c\n",buffer[0],buffer[1],buffer[2],buffer[3]);
 }
 

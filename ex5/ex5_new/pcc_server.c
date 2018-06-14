@@ -172,8 +172,7 @@ void getNewConnection(unsigned short port, int listenfd)
 }
 
 
-void* handleConnection(void* connectionSocketfd)
-{
+void* handleConnection(void* connectionSocketfd) {
     int connfd = *(int*)connectionSocketfd;
     char lengthBuffer[sizeof(unsigned int)];
     int bytes_read = 0;
@@ -223,6 +222,7 @@ void* handleConnection(void* connectionSocketfd)
     free(buffer);
     //close connection
     close(connfd);
+    exit(0);
 }
 
 unsigned int charsToUnsignedInt(char* buffer)
