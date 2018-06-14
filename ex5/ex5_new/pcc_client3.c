@@ -73,34 +73,34 @@ int main(int argc, char *argv[]) {
 }
 
 in_addr_t hostNameToIp(char* serverHost) {
-	int rv;
-    	struct in_addr serverInAddr;
-    	struct addrinfo hints;
-	struct addrinfo *serverInfo;
 	in_addr_t ip;
-     	
-	memset(&serverInAddr, 0, sizeof(struct in_addr));
-    	memset(&hints, 0, sizeof(struct addrinfo));
-	rv = inet_aton(serverHost, &serverInAddr);
-    	if (rv == 0) {
-        	hints.ai_family = AF_INET;
-	        hints.ai_socktype = SOCK_STREAM;
-		rv = getaddrinfo(serverHost , NULL, &hints , &serverInfo);
-        	if (rv != 0) {
-	    		perror("Error in getaddrinfo()");
-	    		exit(EXIT_FAILURE);
-		}
-		struct sockaddr *socketAddr = serverInfo->ai_addr;
-		struct sockaddr_in *socketAddrIn = (struct sockaddr_in *)socketAddr;
-	        serverHost = inet_ntoa(socketAddrIn->sin_addr);
-		rv = inet_aton(serverHost, &serverInAddr);
-	        if (rv == 0) {
-	    		perror("Error not valid IP address");
-			exit(EXIT_FAILURE);
-		}
-    	}
-    	ip = serverInAddr.s_addr;
-    	return ip;
+    struct in_addr addr;
+    struct addrinfo hints, *servinfo;
+
+    memset(&addr, 0, sizeof(addr));
+    //if regular ip, use inet_aton() and return
+    if (0 == inet_aton(serverHost, &addr))
+    {
+        //if name, try to convert using getaddrinfo()
+        memset(&hints, 0, sizeof(hints));
+        hints.ai_family = AF_INET;
+        hints.ai_socktype = SOCK_STREAM;
+        if (getaddrinfo(serverHost , NULL, &hints , &servinfo) != 0)
+        {
+            perror("ERROR4");
+            exit(-1);
+        }
+        struct sockaddr *sa = servinfo->ai_addr;
+        struct sockaddr_in *sin = (struct sockaddr_in *) sa;
+        serverHost = inet_ntoa(sin->sin_addr);
+        if (0 == inet_aton(serverHost, &addr))
+        {
+            perror("ERROR5: bad IP");
+            exit(-1);
+        }
+    }
+    ip = addr.s_addr;
+    return ip;
 }
 
 int getConnection(unsigned short port, in_addr_t serverIP, unsigned int length)
