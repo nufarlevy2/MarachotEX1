@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200112L
 #define _GNU_SOURCE
+#define MAX_UNSIGNED_SHORT 65535
 
 #include <stdio.h>
 #include <stdlib.h>
